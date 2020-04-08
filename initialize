@@ -1,0 +1,17 @@
+<?php
+
+session_start();
+ob_start();
+
+$APPLICATION_PATH = str_replace("\\", "/", getcwd());
+$APPLICATION_ROOT = explode('/', $APPLICATION_PATH)[count(explode('/', $APPLICATION_PATH)) - 1];
+
+$ASSET['stylesheets'] = 'http://' . $_SERVER['SERVER_NAME'] . '/' . $APPLICATION_ROOT . '/assets/stylesheets/';
+$ASSET['javascripts'] = 'http://' . $_SERVER['SERVER_NAME'] . '/' . $APPLICATION_ROOT . '/assets/javascripts/';
+
+require_once('configuration/database/initialize');
+
+spl_autoload_register(function($object) 
+{
+    require_once("models/{$object}.php");
+});
