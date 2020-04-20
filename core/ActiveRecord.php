@@ -5,7 +5,7 @@ class ActiveRecord extends MySQLDatabase
     public function __construct(Array $attributes = [])
     {
         $this->params = $attributes;
-        $this->table = strtolower(self::pluralize(2, get_class($this)));
+        $this->table = strtolower(pluralize(2, get_class($this)));
         $this->populateFieldsWithDatabase($this, $attributes);
         parent::__construct($this->table, $attributes);
     }
@@ -169,7 +169,7 @@ class ActiveRecord extends MySQLDatabase
 
     public static function create(Array $attributes)
     {
-        static::$TABLE = strtolower(static::pluralize(2, get_called_class()));
+        static::$TABLE = strtolower(pluralize(2, get_called_class()));
         unset($attributes['id'], $attributes['table'], $attributes['params']);
 
         $number_of_attributes = count($attributes);

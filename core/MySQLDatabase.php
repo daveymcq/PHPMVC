@@ -8,24 +8,6 @@ class MySQLDatabase extends Database
         $this->params = $attributes;
     }
 
-    protected static function pluralize($quantity, $singular, $plural = null)
-    {
-        if($quantity == 1 || !strlen($singular)) return $singular;
-        if($plural !== null) return $plural;
-
-        $last_letter = strtolower($singular[strlen($singular) - 1]);
-
-        switch($last_letter)
-        {
-            case 'y':
-                return substr($singular, 0, -1) . 'ies';
-            case 's':
-                return $singular . 'es';
-            default:
-                return $singular . 's';
-        }
-    }
-
     public static function query(String $sql, Array $params = [])
     {
         $query = (static::getInstance()->getConnection())->prepare($sql);
@@ -46,7 +28,7 @@ class MySQLDatabase extends Database
 
     public static function where(Array $conditions)
     {
-        $table = static::pluralize(2, get_called_class());
+        $table = pluralize(2, get_called_class());
         $number_of_conditions = count($conditions);
         $sql = "SELECT `*` FROM `{$table}` WHERE";
 

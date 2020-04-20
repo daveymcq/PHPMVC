@@ -10,7 +10,11 @@ class Controller
         {
             $this->params['controller'] = $controller;
             $this->params['action'] = $action;
-            require_once("views/{$controller}/{$action}.php");
+
+            if(file_exists("views/{$controller}/{$action}.php"))
+            {
+                @require_once("views/{$controller}/{$action}.php");
+            }
         }
 
         else if((isset($action, $id)) && ($action !== '') && ($id !== ''))
@@ -18,30 +22,22 @@ class Controller
             $this->params['controller'] = $controller;
             $this->params['action'] = $action;
             $this->params['id'] = $id;
-            require_once("views/{$controller}/{$action}.php");
+
+            if(file_exists("views/{$controller}/{$action}.php"))
+            {
+                @require_once("views/{$controller}/{$action}.php");
+            }
         }
 
         else
         {
             $this->params['controller'] = $controller;
             $this->params['action'] = (isset($action)) ? $action : 'index';
-            require_once("views/{$controller}/{$this->params['action']}.php");
+
+            if(file_exists("views/{$controller}/{$this->params['action']}.php"))
+            {
+                @require_once("views/{$controller}/{$this->params['action']}.php");
+            }
         }
-
-        return $this->index();
     }
-
-    public function index() {}
-
-    public function new() {}
-
-    public function create() {}
-
-    public function show($id) {}
-
-    public function edit($id) {}
-
-    public function update($id) {}
-
-    public function delete($id) {}
 }
