@@ -1,14 +1,14 @@
 <?php
 class Database
 {
-    private static PDO $connection;
-    private static Database $instance;
-    private static String $adapter;
+    private static $connection;
+    private static $instance;
+    private static $adapter;
 
-    protected static String $TABLE;
+    protected static $TABLE;
 
-    protected Array $params;
-    protected String $table;
+    protected $params;
+    protected $table;
 
     private function __construct()
     {

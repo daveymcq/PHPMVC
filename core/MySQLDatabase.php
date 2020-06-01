@@ -30,18 +30,23 @@ class MySQLDatabase extends Database
     {
         $table = pluralize(2, get_called_class());
         $number_of_conditions = count($conditions);
-        $sql = "SELECT `*` FROM `{$table}` WHERE";
+        $sql = "SELECT `*` FROM `{$table}`";
 
-        foreach($conditions as $column => $value)
+        if(count($conditions))
         {
-            $sql .= " `{$column}` = '{$value}'";
-
-            if($number_of_conditions > 1)
+            $sql .= " WHERE";
+            
+            foreach($conditions as $column => $value)
             {
-                $sql .= ' AND';
-            }
+                $sql .= " `{$column}` = '{$value}'";
 
-            $number_of_conditions--;
+                if($number_of_conditions > 1)
+                {
+                    $sql .= ' AND';
+                }
+
+                $number_of_conditions--;
+            }
         }
 
         $results = static::query($sql, $conditions);
@@ -60,23 +65,30 @@ class MySQLDatabase extends Database
 
                 return $objects;
             }
+
             else
             {
-                $object = new static($results[0]);
+                $object = new static(end($results));
                 return $object;
             }
         }
 
-        return false;
+        return null;
     }
 
     public static function find($id)
     {
-        return static::where(['id' => $id]);
+        $object = static::where(['id' => $id]);
+        return (is_array($object)) ? end($object) : $object;
     }
 
     public static function find_by(String $column, $value)
     {
         return static::where([$column => $value]);
+    }
+
+    public function all()
+    {
+        return static::where([]);
     }
 }

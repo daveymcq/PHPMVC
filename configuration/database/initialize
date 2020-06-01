@@ -1,11 +1,11 @@
 <?php
 
 require_once('database_configuration');
-require_once($APPLICATION_PATH . '/core/Database.php');
+require_once(APPLICATION_PATH . '/core/Database.php');
 
 // For MySQL Databases.
-require_once($APPLICATION_PATH . '/core/MySQLDatabase.php');
+require_once(APPLICATION_PATH . '/core/MySQLDatabase.php');
 
 // For ActiveRecord support.
-require_once($APPLICATION_PATH . '/core/ActiveRecord.php');
-require_once($APPLICATION_PATH . '/core/Model.php');
+require_once(APPLICATION_PATH . '/core/ActiveRecord.php');
+require_once(APPLICATION_PATH . '/core/Model.php');

@@ -19,14 +19,16 @@ class ActiveRecord extends MySQLDatabase
         for($i = 0; $i < count($database_columns); $i++)
         {
             $column = array_values($database_columns[$i])[0];
-
             $exclusions = ['USER', 'CURRENT_CONNECTIONS', 'TOTAL_CONNECTIONS'];
 
             if(!property_exists($object, $column))
             {
                 if(!in_array($column, $exclusions))
                 {
-                    $object->{$column} = (isset($schema[$column])) ? $schema[$column] : '';
+                    if(isset($schema[$column]))
+                    {
+                        $object->{$column} = $schema[$column];
+                    }
                 }
             }
         }
@@ -39,14 +41,15 @@ class ActiveRecord extends MySQLDatabase
         if(!$this->exists())
         {
             $attributes = get_object_vars($this);
-            $user = $this->create($attributes);
-            return $user;
+            $object = $this->create($attributes);
+            return (is_array($object)) ? end($object) : $object;
         }
+
         else
         {
             $attributes = get_object_vars($this);
-            $user = $this->update($attributes);
-            return $user;
+            $object = $this->update($attributes);
+            return (is_array($object)) ? end($object) : $object;
         }
 
         return false;
@@ -61,11 +64,7 @@ class ActiveRecord extends MySQLDatabase
             if(isset($attributes['id']))
             {
                 $object = static::find($attributes['id']);
-
-                if($object)
-                {
-                    return true;
-                }
+                return ($object) ? true : false;
             }
         }
 
@@ -118,8 +117,8 @@ class ActiveRecord extends MySQLDatabase
 
                 if($result)
                 {
-                    $user = static::where($attributes);
-                    return $user;
+                    $object = static::where($attributes);
+                    return $object;
                 }
             }
         }
@@ -170,6 +169,12 @@ class ActiveRecord extends MySQLDatabase
     public static function create(Array $attributes)
     {
         static::$TABLE = strtolower(pluralize(2, get_called_class()));
+
+        if(isset($attributes))
+        {
+            $id = $attributes['id'];
+        }
+
         unset($attributes['id'], $attributes['table'], $attributes['params']);
 
         $number_of_attributes = count($attributes);
@@ -207,7 +212,7 @@ class ActiveRecord extends MySQLDatabase
             if($result)
             {
                 $object = static::where($attributes);
-                if($object !== false) return $object;
+                return $object;
             }
         }
 

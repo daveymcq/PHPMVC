@@ -2,7 +2,7 @@
 
 class Controller
 {
-    public Array $params;
+    public $params;
 
     public function __construct($controller, $action = null, $id = null)
     {
@@ -10,11 +10,6 @@ class Controller
         {
             $this->params['controller'] = $controller;
             $this->params['action'] = $action;
-
-            if(file_exists("views/{$controller}/{$action}.php"))
-            {
-                @require_once("views/{$controller}/{$action}.php");
-            }
         }
 
         else if((isset($action, $id)) && ($action !== '') && ($id !== ''))
@@ -22,22 +17,45 @@ class Controller
             $this->params['controller'] = $controller;
             $this->params['action'] = $action;
             $this->params['id'] = $id;
-
-            if(file_exists("views/{$controller}/{$action}.php"))
-            {
-                @require_once("views/{$controller}/{$action}.php");
-            }
+            $_SESSION[strtolower(singularize($controller))]['id'] = $id;
         }
 
         else
         {
             $this->params['controller'] = $controller;
             $this->params['action'] = (isset($action)) ? $action : 'index';
+        }
+    }
 
-            if(file_exists("views/{$controller}/{$this->params['action']}.php"))
+    public static function redirect_to($location)
+    {
+        $url = APPLICATION_ROOT . '/' . $location;
+
+        if(is_array($location))
+        {
+            $url = APPLICATION_ROOT;
+
+            if(isset($location['controller']))
             {
-                @require_once("views/{$controller}/{$this->params['action']}.php");
+                $controller = "{$location['controller']}";
+                $url .= "/{$controller}";
+
+                if(isset($location['action']))
+                {
+                    $url .= "/{$location['action']}";
+
+                    if(isset($location['id']))
+                    {
+                        $url .= "/{$location['id']}";
+                    }
+                }
+            }
+            else
+            {
+                return false;
             }
         }
+
+        header("Location: /{$url}");
     }
 }
