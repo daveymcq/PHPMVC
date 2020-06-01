@@ -1,5 +1,5 @@
-<?php require_once('views/layout/top.layout.php'); ?>
+<?php require_once('views/layout/header.layout.php'); ?>
 
 <p>Pages#Index</p>
 
-<?php require_once('views/layout/bottom.layout.php'); ?>
+<?php require_once('views/layout/footer.layout.php'); ?>
