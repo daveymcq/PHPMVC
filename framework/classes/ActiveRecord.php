@@ -5,7 +5,7 @@ class ActiveRecord extends MySQLDatabase
     public function __construct(Array $attributes = [])
     {
         $this->params = $attributes;
-        $this->table = strtolower(pluralize(2, get_class($this)));
+        $this->table = strtolower(pluralize(get_class($this)));
         $this->populateFieldsWithDatabase($this, $attributes);
         parent::__construct($this->table, $attributes);
     }
@@ -25,9 +25,14 @@ class ActiveRecord extends MySQLDatabase
             {
                 if(!in_array($column, $exclusions))
                 {
-                    if(isset($schema[$column]))
+                    $object->{$column} = (isset($schema[$column])) ? $schema[$column] : '';
+
+                    $association = strstr($column, '_id', true);
+
+                    if($association && ($object->{$column} != ''))
                     {
-                        $object->{$column} = $schema[$column];
+                        $object->{$association} = $association::find($object->{$column});
+                        unset($object->{$column});
                     }
                 }
             }
@@ -168,7 +173,7 @@ class ActiveRecord extends MySQLDatabase
 
     public static function create(Array $attributes)
     {
-        static::$TABLE = strtolower(pluralize(2, get_called_class()));
+        static::$TABLE = strtolower(pluralize(get_called_class()));
 
         if(isset($attributes))
         {

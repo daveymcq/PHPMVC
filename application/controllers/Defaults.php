@@ -1,9 +1,9 @@
 <?php
 
-class Pages extends Controller
+class Defaults extends Controller
 {
     public function index()
     {
-
+        
     }
 }

@@ -28,14 +28,14 @@ class MySQLDatabase extends Database
 
     public static function where(Array $conditions)
     {
-        $table = pluralize(2, get_called_class());
+        $table = pluralize(get_called_class());
         $number_of_conditions = count($conditions);
         $sql = "SELECT `*` FROM `{$table}`";
 
         if(count($conditions))
         {
             $sql .= " WHERE";
-            
+
             foreach($conditions as $column => $value)
             {
                 $sql .= " `{$column}` = '{$value}'";
@@ -87,7 +87,7 @@ class MySQLDatabase extends Database
         return static::where([$column => $value]);
     }
 
-    public function all()
+    public static function all()
     {
         return static::where([]);
     }

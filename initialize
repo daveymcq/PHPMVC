@@ -8,10 +8,4 @@ ob_start();
 define('APPLICATION_PATH', str_replace("\\", "/", getcwd()));
 define('APPLICATION_ROOT', explode('/', APPLICATION_PATH)[count(explode('/', APPLICATION_PATH)) - 1]);
 
-require_once('configuration/database/initialize');
-require_once('core/string_helper_functions.php');
-
-spl_autoload_register(function($object)
-{
-    require_once("models/{$object}.php");
-});
+require_once('framework/initialize');

@@ -6,6 +6,6 @@
       </div>
     </footer>
 
-    <script src="http://localhost/website/assets/javascripts/main.js"></script>
+    <script src="<?php echo JAVASCRIPTS_ASSETS_URL . '/main.js'; ?>"></script>
   </body>
 </html>

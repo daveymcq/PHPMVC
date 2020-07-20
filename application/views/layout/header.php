@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
-    <link rel="stylesheet" href="http://localhost/website/assets/stylesheets/style.css">
+    <link rel="stylesheet" href="<?php echo STYLESHEETS_ASSETS_URL . '/style.css'; ?>">
   </head>
 
   <body>

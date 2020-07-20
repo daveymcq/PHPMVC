@@ -1,0 +1,3 @@
+<?php
+define('STYLESHEETS_ASSETS_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/application/assets/stylesheets');
+define('JAVASCRIPTS_ASSETS_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/application/assets/javascripts');

@@ -25,7 +25,7 @@ window.onload = function()
         {
             clicked = !clicked;
             dropdownMenu.style.display = (clicked) ? "block" : "none";
-            logo.style.background = (clicked) ? '#a90329' : logoBackground;
+            logo.style.background = (clicked) ? '#333' : logoBackground;
 
             if(clicked)
             {

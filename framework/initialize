@@ -1,0 +1,7 @@
+<?php
+require_once('configuration/database/initialize');
+require_once('configuration/assets/initialize');
+
+require_once('framework/functions/HelperFunctions.php');
+require_once('classes/BaseController.php');
+require_once('application/controllers/Controller.php');
