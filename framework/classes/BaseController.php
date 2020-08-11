@@ -17,7 +17,6 @@ class BaseController
             $this->params['controller'] = $controller;
             $this->params['action'] = $action;
             $this->params['id'] = $id;
-            $_SESSION[strtolower(singularize($controller))]['id'] = $id;
         }
 
         else

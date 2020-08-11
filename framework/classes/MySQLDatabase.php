@@ -8,29 +8,54 @@ class MySQLDatabase extends Database
         $this->params = $attributes;
     }
 
-    public static function query(String $sql, Array $params = [])
+    public static function query(String $sql, Array $conditions = [])
     {
         $query = (static::getInstance()->getConnection())->prepare($sql);
+        $select_query = (strtoupper(explode(' ', $sql)[0]) === 'SELECT');
 
-        if(count($params))
-            $result = $query->execute(array_values($params));
-        else
-            $result = $query->execute();
-
-        if(strtoupper(explode(' ', $sql)[0]) == 'SELECT')
+        if(count($conditions))
         {
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            return $result;
+            $results = $query->execute(array_values($conditions));
+        }
+        
+        else
+        {
+            $results = $query->execute();
         }
 
-        return ($result) ? true : false;
+        if($select_query)
+        {
+            $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        return $results;
     }
 
     public static function where(Array $conditions)
     {
-        $table = pluralize(get_called_class());
+        $table = strtolower(pluralize(get_called_class()));
         $number_of_conditions = count($conditions);
-        $sql = "SELECT `*` FROM `{$table}`";
+        $sql = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = ?";
+        
+        $database_columns = static::query($sql, [$table]);
+        $columns = '';
+
+        for($i = 0; $i < count($database_columns); $i++)
+        {
+            $column = array_values($database_columns[$i])[0];
+
+            if(!in_array($column, ['USER', 'CURRENT_CONNECTIONS', 'TOTAL_CONNECTIONS']))
+            {
+                $columns .= "`{$column}`";
+
+                if($i < count($database_columns) - 1)
+                {
+                    $columns .= ', ';
+                }
+            }
+        }
+
+        $sql = "SELECT {$columns} FROM `{$table}`";
 
         if(count($conditions))
         {
@@ -38,7 +63,7 @@ class MySQLDatabase extends Database
 
             foreach($conditions as $column => $value)
             {
-                $sql .= " `{$column}` = '{$value}'";
+                $sql .= " `{$column}` = ?";
 
                 if($number_of_conditions > 1)
                 {

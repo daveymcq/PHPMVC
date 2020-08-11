@@ -1,7 +1,9 @@
 <?php
 
-class ActiveRecord extends MySQLDatabase
+class ActiveRecordModel extends MySQLDatabase
 {
+    protected $errors = [];
+
     public function __construct(Array $attributes = [])
     {
         $this->params = $attributes;
@@ -10,7 +12,7 @@ class ActiveRecord extends MySQLDatabase
         parent::__construct($this->table, $attributes);
     }
 
-    protected function populateFieldsWithDatabase(ActiveRecord $object, Array $attributes = [])
+    protected function populateFieldsWithDatabase(ActiveRecordModel $object, Array $attributes = [])
     {
         $schema = (empty($attributes)) ? $this->params : $attributes;
         $sql = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = ?";
@@ -43,18 +45,37 @@ class ActiveRecord extends MySQLDatabase
 
     public function save()
     {
-        if(!$this->exists())
+        if(empty($errors))
         {
-            $attributes = get_object_vars($this);
-            $object = $this->create($attributes);
-            return (is_array($object)) ? end($object) : $object;
-        }
+            if(!$this->exists())
+            {
+                $attributes = get_object_vars($this);
+                $object = $this->create($attributes);
 
-        else
-        {
-            $attributes = get_object_vars($this);
-            $object = $this->update($attributes);
-            return (is_array($object)) ? end($object) : $object;
+                $object = (is_array($object)) ? end($object) : $object;
+
+                if($object) 
+                {
+                    $this->id = $object->id;
+                }
+                
+                return $object;
+            }
+
+            else
+            {
+                $attributes = get_object_vars($this);
+                $object = $this->update($attributes);
+
+                $object = (is_array($object)) ? end($object) : $object;
+
+                if($object) 
+                {
+                    $this->id = $object->id;
+                }
+                
+                return $object;
+            }
         }
 
         return false;
@@ -76,7 +97,7 @@ class ActiveRecord extends MySQLDatabase
         return false;
     }
 
-    public function update(Array $new_attributes = [])
+    public function update(Array $new_attributes)
     {
         $attributes = get_object_vars($this);
 
@@ -91,7 +112,7 @@ class ActiveRecord extends MySQLDatabase
         if(isset($attributes['id']))
         {
             $id = $attributes['id'];
-            unset($attributes['id'], $attributes['table'], $attributes['params']);
+            unset($attributes['errors'], $attributes['id'], $attributes['table'], $attributes['params']);
 
             $number_of_attributes = count($attributes);
 
@@ -138,7 +159,7 @@ class ActiveRecord extends MySQLDatabase
 
         if(count($attributes))
         {
-            unset($attributes['table'], $attributes['params']);
+            unset($attributes['errors'], $attributes['table'], $attributes['params']);
 
             $number_of_attributes = count($attributes);
             $sql = 'DELETE FROM `' . $this->table . '` WHERE ';
@@ -174,13 +195,7 @@ class ActiveRecord extends MySQLDatabase
     public static function create(Array $attributes)
     {
         static::$TABLE = strtolower(pluralize(get_called_class()));
-
-        if(isset($attributes))
-        {
-            $id = $attributes['id'];
-        }
-
-        unset($attributes['id'], $attributes['table'], $attributes['params']);
+        unset($attributes['errors'], $attributes['id'], $attributes['table'], $attributes['params']);
 
         $number_of_attributes = count($attributes);
 
@@ -196,7 +211,6 @@ class ActiveRecord extends MySQLDatabase
             {
                 if($number_of_attributes > 0)
                 {
-
                     $sql_columns .= "`{$attribute}`";
                     $sql_values .= "?";
 

@@ -7,7 +7,7 @@ require_once('framework/classes/Database.php');
 require_once('framework/classes/MySQLDatabase.php');
 
 // For ActiveRecord support.
-require_once('framework/classes/ActiveRecord.php');
+require_once('framework/classes/ActiveRecordModel.php');
 
 
 require_once('application/models/Model.php');

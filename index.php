@@ -39,7 +39,7 @@ if(isset($_GET['url']))
                     @require_once("application/views/{$url[0]}/index.php");
                 }
             }
-            
+
         break;
 
         case 2:
@@ -53,7 +53,12 @@ if(isset($_GET['url']))
 
                 if(method_exists($controller, $url[1]))
                 {
-                     $params = $controller->{$url[1]}();
+                    $params = $controller->{$url[1]}();
+                }
+
+                else if(method_exists($controller, 'show'))
+                {
+                    $params = $controller->show($url[1]);
                 }
 
                 if(file_exists("application/views/{$url[0]}/{$url[1]}.php"))
@@ -62,6 +67,14 @@ if(isset($_GET['url']))
                     $_PARAMS['url'] = ['controller' => $url[0], 'action' => $url[1]];
 
                     @require_once("application/views/{$url[0]}/{$url[1]}.php");
+                }
+
+                else if(is_numeric($url[1]) && file_exists("application/views/{$url[0]}/show.php"))
+                {
+                    $_PARAMS[strtolower($url[0])] = $params;
+                    $_PARAMS['url'] = ['controller' => $url[0], 'action' => 'show', 'id' => $url[1]];
+
+                    @require_once("application/views/{$url[0]}/show.php");
                 }
             }
 
@@ -73,20 +86,20 @@ if(isset($_GET['url']))
             {
                 $url[0] = pluralize($url[0]);
                 $url[1] = ($url[1] === '') ? 'index' : $url[1];
-                $controller = new $url[0]($url[0], $url[1], $url[2]);
+                $controller = new $url[0]($url[0], $url[2], $url[1]);
                 $params = [];
 
-                if(method_exists($controller, $url[1]))
+                if(method_exists($controller, $url[2]))
                 {
-                     $params = $controller->{$url[1]}($url[2]);
+                    $params = $controller->{$url[2]}($url[1]);
                 }
 
-                if(file_exists("application/views/{$url[0]}/{$url[1]}.php"))
+                if(file_exists("application/views/{$url[0]}/{$url[2]}.php"))
                 {
                     $_PARAMS[strtolower($url[0])] = $params;
-                    $_PARAMS['url'] = ['controller' => $url[0], 'action' => $url[1], 'id' => $url[2]];
+                    $_PARAMS['url'] = ['controller' => $url[0], 'action' => $url[2], 'id' => $url[1]];
 
-                    @require_once("application/views/{$url[0]}/{$url[1]}.php");
+                    @require_once("application/views/{$url[0]}/{$url[2]}.php");
                 }
             }
 
