@@ -1,1 +1,1 @@
-application/database/*.sql
+application/database/schema.sql
