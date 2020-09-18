@@ -1,29 +1,27 @@
 <?php
 
-function pluralize($singular)
+function pluralize(String $singular)
 {
-    if(strlen($singular))
+    $plural = $singular;
+
+    if(substr($plural, strlen($plural) - 1, strlen($plural)) === 'y')
     {
-
-        $last_letter = strtolower($singular[strlen($singular) - 1]);
-
-        switch($last_letter)
-        {
-            case 'y':
-
-                return substr($singular, 0, -1) . 'ies';
-
-            case 's':
-
-                return $singular . 'es';
-
-            default:
-            
-                return $singular . 's';
-        }
+        $plural = substr($plural, 0, -1);
+        $plural .= 'ies';
     }
 
-    return $singular;
+    else if(substr($plural, strlen($plural) - 1, strlen($plural)) === 's')
+    {
+        $plural = substr($plural, 0, -1);
+        $plural .= 'es';
+    }
+
+    else
+    {
+        $plural .= 's';
+    }
+
+    return $plural;
 }
 
 function singularize(String $plural)
@@ -42,7 +40,7 @@ function singularize(String $plural)
         $singular .= 's';
     }
 
-    else
+    else if(substr($plural, strlen($plural) - 1, strlen($plural)) === 's')
     {
         $singular = substr($plural, 0, -1);
     }
