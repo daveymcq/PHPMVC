@@ -2,7 +2,7 @@
 
 function pluralize(String $singular)
 {
-    $plural = $singular;
+    $plural = singularize($singular);
 
     if(substr($plural, strlen($plural) - 1, strlen($plural)) === 'y')
     {

@@ -2,23 +2,22 @@
 
 if(isset($_GET['url']))
 {
-    define('APPLICATION_PATH', str_replace("\\", "/", getcwd()));
-    define('APPLICATION_ROOT', explode('/', APPLICATION_PATH)[count(explode('/', APPLICATION_PATH)) - 1]);
-
     $_PARAMS = [];
     $_MESSAGE = [];
+
+    $url = explode("/", htmlentities($_GET['url']));
+
+    define('APPLICATION_PATH', str_replace("\\", "/", getcwd()));
+    define('APPLICATION_ROOT', explode('/', APPLICATION_PATH)[count(explode('/', APPLICATION_PATH)) - 1]);
 
     @require_once('framework/initialize');
     @require_once('application/controllers/Controller.php');
     @require_once('application/models/Model.php');
-
-    $url = explode("/", htmlentities($_GET['url']));
-
     @require_once('application/controllers/' . pluralize($url[0]) . '.php');
 
-    if(file_exists('application/models/' . $url[0] . '.php'))
+    if(file_exists('application/models/' . singularize($url[0]) . '.php'))
     {
-        @require_once('application/models/' . $url[0] . '.php');
+        @require_once('application/models/' . singularize($url[0]) . '.php');
     }
 
     switch(count($url))
