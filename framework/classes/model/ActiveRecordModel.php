@@ -4,12 +4,17 @@ class ActiveRecordModel extends MySQLDatabase
 {
     protected $errors = [];
 
-    public function __construct(Array $attributes = [])
+    public function ActiveRecordModel(Array $attributes = [])
     {
         $this->params = $attributes;
         $this->table = strtolower(pluralize(get_class($this)));
         $this->populateFieldsWithDatabase($this, $attributes);
         parent::__construct($this->table, $attributes);
+        
+        if(method_exists($this, 'init'))
+        {
+            $this->init();
+        }
     }
 
     protected function populateFieldsWithDatabase(ActiveRecordModel $object, Array $attributes = [])

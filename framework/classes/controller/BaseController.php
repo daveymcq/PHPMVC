@@ -4,7 +4,7 @@ class BaseController
 {
     public $params;
 
-    public function __construct($controller, $action = null, $id = null)
+    public function BaseController($controller, $action = null, $id = null)
     {
         if((isset($action) && ($id === null)) && ($action !== ''))
         {

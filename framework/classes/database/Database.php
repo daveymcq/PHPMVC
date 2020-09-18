@@ -10,7 +10,7 @@ class Database
     protected $params;
     protected $table;
 
-    private function __construct()
+    private function Database()
     {
         self::setDatabaseAdapter(DB_ADAPTER);
 
