@@ -5,7 +5,9 @@ if(isset($_GET['url']))
     $_PARAMS = [];
     $_MESSAGE = [];
 
-    require_once('initialize');
+    require_once('framework/initialize');
+    require_once('application/controllers/Controller.php');
+    require_once('application/models/Model.php');
 
     $url = explode("/", htmlentities($_GET['url']));
 
