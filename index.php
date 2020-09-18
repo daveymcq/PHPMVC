@@ -2,6 +2,9 @@
 
 if(isset($_GET['url']))
 {
+    define('APPLICATION_PATH', str_replace("\\", "/", getcwd()));
+    define('APPLICATION_ROOT', explode('/', APPLICATION_PATH)[count(explode('/', APPLICATION_PATH)) - 1]);
+
     $_PARAMS = [];
     $_MESSAGE = [];
 

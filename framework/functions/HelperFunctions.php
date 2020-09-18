@@ -78,4 +78,5 @@ function redirect_to($location)
     }
 
     header("Location: /{$url}");
+    exit(0);
 }
