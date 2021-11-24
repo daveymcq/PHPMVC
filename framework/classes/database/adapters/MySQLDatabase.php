@@ -8,6 +8,50 @@ class MySQLDatabase extends Database
         $this->params = $attributes;
     }
 
+    protected function populateFieldsWithDatabase(ActiveRecordModel $object, Array $attributes = [])
+    {
+        $table = $this->table;
+        $schema = (empty($attributes)) ? $this->params : $attributes;
+        $sql = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = ? AND `TABLE_SCHEMA` = ?";
+        $database_columns = $this->query($sql, [$table, APPLICATION_ROOT]);
+
+        for($i = 0; $i < count($database_columns); $i++)
+        {
+            $column = array_values($database_columns[$i])[0];
+            $exclusions = ['USER', 'CURRENT_CONNECTIONS', 'TOTAL_CONNECTIONS'];
+
+            if(!property_exists($object, $column))
+            {
+                if(!in_array($column, $exclusions))
+                {
+                    $object->{$column} = (isset($schema[$column])) ? $schema[$column] : '';
+
+                    $association = strstr($column, '_id', true);
+
+                    if($association && ($object->{$column} != ''))
+                    {
+                        $object->{$association} = $association::find($object->{$column});
+                        unset($object->{$column});
+                    }
+                }
+            }
+
+            if(property_exists($object, 'errors')) {
+                unset($object->errors);
+            }
+
+            if(property_exists($object, 'params')) {
+                unset($object->params);
+            }
+
+            if(property_exists($object, 'table')) {
+                unset($object->table);
+            }
+        }
+
+        return $object;
+    }
+
     public static function query(String $sql, Array $conditions = [])
     {
         $query = (static::getInstance()->getConnection())->prepare($sql);

@@ -4,62 +4,12 @@ class ActiveRecordModel extends MySQLDatabase
 {
     protected $errors = [];
 
-
     public function __construct(Array $attributes = [])
     {
         parent::__construct(APPLICATION_ROOT, $attributes);
         $this->params = $attributes;
         $this->table = strtolower(pluralize(get_class($this)));
         $this->populateFieldsWithDatabase($this, $attributes);
-        
-        if(method_exists($this, 'init'))
-        {
-            $this->init();
-        }
-    }
-
-    protected function populateFieldsWithDatabase(ActiveRecordModel $object, Array $attributes = [])
-    {
-        $table = strtolower(pluralize(get_class($this)));
-        $schema = (empty($attributes)) ? $this->params : $attributes;
-        $sql = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = ? AND `TABLE_SCHEMA` = ?";
-        $database_columns = $this->query($sql, [$table, APPLICATION_ROOT]);
-
-        for($i = 0; $i < count($database_columns); $i++)
-        {
-            $column = array_values($database_columns[$i])[0];
-            $exclusions = ['USER', 'CURRENT_CONNECTIONS', 'TOTAL_CONNECTIONS'];
-
-            if(!property_exists($object, $column))
-            {
-                if(!in_array($column, $exclusions))
-                {
-                    $object->{$column} = (isset($schema[$column])) ? $schema[$column] : '';
-
-                    $association = strstr($column, '_id', true);
-
-                    if($association && ($object->{$column} != ''))
-                    {
-                        $object->{$association} = $association::find($object->{$column});
-                        unset($object->{$column});
-                    }
-                }
-            }
-
-            if(property_exists($object, 'errors')) {
-                unset($object->errors);
-            }
-
-            if(property_exists($object, 'params')) {
-                unset($object->params);
-            }
-
-            if(property_exists($object, 'table')) {
-                unset($object->table);
-            }
-        }
-
-        return $object;
     }
 
     public function save()
