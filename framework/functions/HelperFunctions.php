@@ -50,7 +50,7 @@ function singularize(String $plural)
 
 function redirect_to($location)
 {
-    $url = $location;
+    $url = APPLICATION_ROOT . '/' . $location;
 
     if(is_array($location))
     {

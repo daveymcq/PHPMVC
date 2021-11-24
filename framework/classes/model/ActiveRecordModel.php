@@ -4,9 +4,10 @@ class ActiveRecordModel extends MySQLDatabase
 {
     protected $errors = [];
 
+
     public function __construct(Array $attributes = [])
     {
-        parent::__construct('PHPMVC', $attributes);
+        parent::__construct(APPLICATION_ROOT, $attributes);
         $this->params = $attributes;
         $this->table = strtolower(pluralize(get_class($this)));
         $this->populateFieldsWithDatabase($this, $attributes);
@@ -19,9 +20,10 @@ class ActiveRecordModel extends MySQLDatabase
 
     protected function populateFieldsWithDatabase(ActiveRecordModel $object, Array $attributes = [])
     {
+        $table = strtolower(pluralize(get_class($this)));
         $schema = (empty($attributes)) ? $this->params : $attributes;
         $sql = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = ?";
-        $database_columns = $this->query($sql, [$this->table]);
+        $database_columns = $this->query($sql, [$table]);
 
         for($i = 0; $i < count($database_columns); $i++)
         {
@@ -135,8 +137,9 @@ class ActiveRecordModel extends MySQLDatabase
 
             if($number_of_attributes)
             {
+                $table = strtolower(pluralize(get_class($this)));
                 $column_names = array_keys($attributes);
-                $sql = "UPDATE `{$this->table}` SET ";
+                $sql = "UPDATE `{$table}` SET ";
                 $sql_values = '';
                 $sql_where = "`id` = '{$id}'";
 
@@ -178,8 +181,9 @@ class ActiveRecordModel extends MySQLDatabase
         {
             unset($attributes['errors'], $attributes['table'], $attributes['params']);
 
+            $table = strtolower(pluralize(get_class($this)));
             $number_of_attributes = count($attributes);
-            $sql = 'DELETE FROM `' . $this->table . '` WHERE ';
+            $sql = 'DELETE FROM `' . $table . '` WHERE ';
             $column_names = array_keys($attributes);
 
             foreach($column_names as $attribute)
