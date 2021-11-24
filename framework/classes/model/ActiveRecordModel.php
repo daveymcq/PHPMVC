@@ -22,8 +22,8 @@ class ActiveRecordModel extends MySQLDatabase
     {
         $table = strtolower(pluralize(get_class($this)));
         $schema = (empty($attributes)) ? $this->params : $attributes;
-        $sql = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = ?";
-        $database_columns = $this->query($sql, [$table]);
+        $sql = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = ? AND `TABLE_SCHEMA` = ?";
+        $database_columns = $this->query($sql, [$table, APPLICATION_ROOT]);
 
         for($i = 0; $i < count($database_columns); $i++)
         {

@@ -11,7 +11,7 @@
         echo '<p>' . $user->email . '</p>';
         echo '<p>' . $user->first_name . '</p>';
         echo '<p>' . $user->last_name . '</p>';
-        echo "<a href='/user/{$user->id}/delete'>Delete</a>";
+        echo "<a href=" . "/" . APPLICATION_ROOT . "/user/{$user->id}/delete>Delete</a>";
         echo '<br>';
     }
 ?>
