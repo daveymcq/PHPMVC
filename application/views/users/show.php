@@ -3,7 +3,6 @@
 <p>Users#Show</p>
 
 <?php
-    print_r(new User);
     $user = $_PARAMS['users'];
 
     if($user)
