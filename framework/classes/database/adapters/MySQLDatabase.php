@@ -18,7 +18,7 @@ class MySQLDatabase extends Database
         for($i = 0; $i < count($database_columns); $i++)
         {
             $column = array_values($database_columns[$i])[0];
-            $exclusions = ['USER', 'CURRENT_CONNECTIONS', 'TOTAL_CONNECTIONS'];
+            $exclusions = [];
 
             if(!property_exists($object, $column))
             {
