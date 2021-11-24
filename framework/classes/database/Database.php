@@ -17,8 +17,17 @@ class Database
         switch(self::$adapter)
         {
             case 'mysql':
-                $adapter_string = self::$adapter . ':host=' . DB_HOST . ';dbname=' . DB_NAME;
-                self::$connection = (isset(self::$connection)) ? self::$connection : new PDO($adapter_string, DB_USER, DB_PASS);
+
+                try
+                {
+                    $adapter_string = self::$adapter . ':host=' . DB_HOST . ';dbname=' . DB_NAME;
+                    self::$connection = (isset(self::$connection)) ? self::$connection : new PDO($adapter_string, DB_USER,DB_PASS);
+                }
+                catch(PDOException $e)
+                {
+                    die($e->getMessage());
+                }
+
             break;
         }
     }
