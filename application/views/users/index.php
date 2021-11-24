@@ -3,7 +3,6 @@
 <p>Users#Index</p>
 
 <?php
-    print_r(new User);
     
     $users = $_PARAMS['users'];
 

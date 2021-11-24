@@ -43,6 +43,18 @@ class ActiveRecordModel extends MySQLDatabase
                     }
                 }
             }
+
+            if(property_exists($object, 'errors')) {
+                unset($object->errors);
+            }
+
+            if(property_exists($object, 'params')) {
+                unset($object->params);
+            }
+
+            if(property_exists($object, 'table')) {
+                unset($object->table);
+            }
         }
 
         return $object;
