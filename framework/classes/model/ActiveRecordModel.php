@@ -4,12 +4,12 @@ class ActiveRecordModel extends MySQLDatabase
 {
     protected $errors = [];
 
-    public function ActiveRecordModel(Array $attributes = [])
+    public function __construct(Array $attributes = [])
     {
+        parent::__construct('PHPMVC', $attributes);
         $this->params = $attributes;
         $this->table = strtolower(pluralize(get_class($this)));
         $this->populateFieldsWithDatabase($this, $attributes);
-        parent::__construct($this->table, $attributes);
         
         if(method_exists($this, 'init'))
         {

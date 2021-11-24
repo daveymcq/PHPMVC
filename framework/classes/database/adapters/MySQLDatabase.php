@@ -2,7 +2,7 @@
 
 class MySQLDatabase extends Database
 {
-    public function MySQLDatabase(String $table, Array $attributes = [])
+    public function __construct(String $table, Array $attributes = [])
     {
         $this->table = strtolower($table);
         $this->params = $attributes;

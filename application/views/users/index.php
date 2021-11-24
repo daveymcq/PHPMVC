@@ -13,7 +13,6 @@
         echo '<p>' . $user->email . '</p>';
         echo '<p>' . $user->first_name . '</p>';
         echo '<p>' . $user->last_name . '</p>';
-        echo '<p>' . (int)$user->active . '</p>';
         echo '<br>';
     }
 ?>
