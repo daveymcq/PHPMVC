@@ -79,29 +79,10 @@ class MySQLDatabase extends Database
     {
         $table = strtolower(pluralize(get_called_class()));
         $number_of_conditions = count($conditions);
-        $sql = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = ?";
-        
-        $database_columns = static::query($sql, [$table]);
-        $columns = '';
 
-        for($i = 0; $i < count($database_columns); $i++)
-        {
-            $column = array_values($database_columns[$i])[0];
+        $sql = "SELECT * FROM `{$table}`";
 
-            if(!in_array($column, ['USER', 'CURRENT_CONNECTIONS', 'TOTAL_CONNECTIONS']))
-            {
-                $columns .= "`{$column}`";
-
-                if($i < count($database_columns) - 1)
-                {
-                    $columns .= ', ';
-                }
-            }
-        }
-
-        $sql = "SELECT {$columns} FROM `{$table}`";
-
-        if(count($conditions))
+        if($number_of_conditions)
         {
             $sql .= " WHERE";
 
