@@ -3,6 +3,7 @@
 class ActiveRecordModel extends MySQLDatabase
 {
     protected $errors = [];
+    protected $params = [];
 
     public function __construct(Array $attributes = [])
     {
@@ -165,14 +166,14 @@ class ActiveRecordModel extends MySQLDatabase
 
     public static function create(Array $attributes)
     {
-        static::$TABLE = strtolower(pluralize(get_called_class()));
+        $table = strtolower(pluralize(get_called_class()));
         unset($attributes['errors'], $attributes['id'], $attributes['table'], $attributes['params']);
 
         $number_of_attributes = count($attributes);
 
         if($number_of_attributes)
         {
-            $sql = 'INSERT INTO `' . static::$TABLE . '`';
+            $sql = 'INSERT INTO `' . $table . '`';
             $sql_columns = '';
             $sql_values = '';
 

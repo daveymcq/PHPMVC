@@ -41,15 +41,19 @@ class Users extends Controller
     {
         $user = User::find($id);
 
-        if($user && $user->update($_POST['user']))
+        if($user)
         {
-            redirect_to("user/{$user->id}");
+            $user->first_name = $_POST['user']['first_name'];
+            $user->last_name = $_POST['user']['last_name'];
+            $user->email = $_POST['user']['email'];
+
+            if($user->save())
+            {
+                redirect_to("user/{$user->id}");
+            }
         }
 
-        else
-        {
-            redirect_to("user/edit/{$user->id}");
-        }
+        redirect_to("user/edit/{$user->id}");
     }
 
     public function delete($id)

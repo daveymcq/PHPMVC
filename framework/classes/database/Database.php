@@ -5,11 +5,6 @@ class Database
     private static $instance;
     private static $adapter;
 
-    protected static $TABLE;
-
-    protected $params;
-    protected $table;
-
     public function __construct()
     {
         self::setDatabaseAdapter(DB_ADAPTER);
