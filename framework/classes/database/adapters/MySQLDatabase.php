@@ -103,7 +103,7 @@ class MySQLDatabase extends Database
 
         if($results)
         {
-            if(count($results) > 1)
+            if(count($results))
             {
                 $objects = [];
 
