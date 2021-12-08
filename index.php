@@ -113,6 +113,6 @@ if(isset($_GET['url']))
 
 else
 {
-    header('Location: default');
+    header('Location: application/public');
     exit(0);
 }
