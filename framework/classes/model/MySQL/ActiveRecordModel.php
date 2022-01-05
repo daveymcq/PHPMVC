@@ -15,7 +15,7 @@ class ActiveRecordModel extends MySQL
 
     public function save()
     {
-        if(empty($errors))
+        if(empty($this->errors))
         {
             if(!$this->exists())
             {
