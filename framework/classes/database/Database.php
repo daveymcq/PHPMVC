@@ -47,4 +47,14 @@ class Database
     {
         return self::$adapter;
     }
+
+    //////////////////////////////////////////////////////////////////////////
+
+    protected function populateFieldsWithDatabase(ActiveRecordModel $object, Array $attributes = []) { return false; }
+    public static function query(String $sql, Array $conditions = []) { return false; }
+    public static function create(Array $attributes) { return false; }
+    public function save() { return false; }
+    public function exists() { return false; }
+    public function update(Array $new_attributes) { return false; }
+    public function delete() { return false; }
 }

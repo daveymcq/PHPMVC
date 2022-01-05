@@ -1,6 +1,6 @@
 <?php
 
-class ActiveRecordModel extends MySQLDatabase
+class ActiveRecordModel extends MySQL
 {
     protected $errors = [];
     protected $params = [];

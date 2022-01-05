@@ -1,6 +1,6 @@
 <?php
 
-class MySQLDatabase extends Database
+class MySQL extends Database
 {
     public function __construct(String $table, Array $attributes = [])
     {

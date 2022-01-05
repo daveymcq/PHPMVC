@@ -1,23 +1,28 @@
 <?php
 
-require_once('database_configuration');
-require_once('framework/classes/database/Database.php');
+require_once("database_configuration");
 
-// For Database Support.
+// Base controller
 
-require_once('framework/classes/database/adapters/MySQLDatabase.php');
+require_once("framework/classes/controller/BaseController.php");
 
-// For ActiveRecord support.
+// For Database Support
 
-require_once('framework/classes/model/ActiveRecordModel.php');
-require_once('framework/classes/controller/BaseController.php');
+require_once("framework/classes/database/Database.php");
+require_once("framework/classes/database/adapters/" . DB_ADAPTER . ".php");
 
-// Helper functions.
+// For ActiveRecord support
 
-require_once('framework/functions/HelperFunctions.php');
+require_once("framework/classes/model/". DB_ADAPTER ."/ActiveRecordModel.php");
+
+// Helper functions
+
+require_once("framework/functions/HelperFunctions.php");
 
 spl_autoload_register(function($class)
 {
-    $class = singularize($class);
-    require_once("application/models/{$class}.php");
+    if(file_exists("application/models/{$class}.php"))
+    {
+        require_once("application/models/{$class}.php");
+    }
 });
