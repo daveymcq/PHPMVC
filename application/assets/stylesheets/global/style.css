@@ -7,6 +7,11 @@
   list-style: none;
 }
 
+strong, b {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
 section, header, footer, nav, aside {
   display: block;
 }

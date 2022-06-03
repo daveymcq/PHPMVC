@@ -1,6 +1,6 @@
 <?php
 
-// MySQL database configuration.
+// Database configuration
 
 define('DB_ADAPTER', 'mysql');
 define('DB_HOST', '127.0.0.1');

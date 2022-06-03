@@ -5,7 +5,6 @@
       <div class="footer-content">
       </div>
     </footer>
-
-    <script src="<?php echo JAVASCRIPTS_ASSETS_URL . '/main.js'; ?>"></script>
+    <?php javascript_include_tag('global/main'); ?>
   </body>
 </html>

@@ -1,7 +1,0 @@
-<?php
-
-session_start();
-ob_start();
-
-require_once('configuration/database/initialize');
-require_once('configuration/assets/initialize');
