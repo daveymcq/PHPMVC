@@ -5,6 +5,7 @@ require_once('framework/initialize.php');
 if(isset($_GET['url']))
 {
     $PARAMS = [];
+    
     $URL = explode("/", htmlentities($_GET['url']));
 
     $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
