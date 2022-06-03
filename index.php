@@ -1,7 +1,5 @@
 <?php
 
-error_reporting(0);
-
 require_once('framework/initialize.php');
 
 if(isset($_GET['url']))
@@ -9,41 +7,48 @@ if(isset($_GET['url']))
     $PARAMS = [];
     $URL = explode("/", htmlentities($_GET['url']));
 
+    $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
+    $MODEL = htmlentities(singularize(trim($URL[0] ?? '')));
+    $ACTION = htmlentities(trim($URL[1] ?? ''));
+    $ID = htmlentities(trim($URL[2] ?? ''));
+
     require_once('application/controllers/Controller.php');
     require_once('application/models/Model.php');
 
-    if(file_exists('application/controllers/' . $URL[0] . '.php'))
+    if(file_exists('application/controllers/' . $CONTROLLER . '.php'))
     {
-        require_once('application/controllers/' . $URL[0] . '.php');
+        require_once('application/controllers/' . $CONTROLLER . '.php');
     }
 
-    if(file_exists('application/models/' . singularize($URL[0]) . '.php'))
+    if(file_exists('application/models/' . $MODEL . '.php'))
     {
-        require_once('application/models/' . singularize($URL[0]) . '.php');
+        require_once('application/models/' . $MODEL . '.php');
     }
 
     switch(count($URL))
     {
         case 1:
 
-            if(isset($URL[0]))
+            if(isset($CONTROLLER))
             {
-                $URL[0] = pluralize($URL[0]);
-                $controller = new $URL[0]($URL[0]);
                 $params = [];
+                $controller = new $CONTROLLER($CONTROLLER);
 
                 if(method_exists($controller, 'index'))
                 {
                      $params = $controller->index();
                 }
 
-                if(file_exists("application/views/{$URL[0]}/index.php"))
+                if(file_exists("application/views/{$CONTROLLER}/index.php"))
                 {
-                    $PARAMS[strtolower($URL[0])] = $params;
-                    $PARAMS['url'] = ['controller' => $URL[0], 'action' => 'index'];
+                    $controller = $CONTROLLER;
+                    $action = 'index';
+
+                    $PARAMS[strtolower($CONTROLLER)] = $params;
+                    $PARAMS['url'] = ['controller' => $controller, 'action' => $action];
 
                     require_once('application/views/layout/header.php');
-                    require_once("application/views/{$URL[0]}/index.php");
+                    require_once("application/views/{$CONTROLLER}/index.php");
                     require_once('application/views/layout/footer.php');
                 }
             }
@@ -52,40 +57,46 @@ if(isset($_GET['url']))
 
         case 2:
 
-            if(isset($URL[0], $URL[1]))
+            if(isset($CONTROLLER, $ACTION))
             {
-                $URL[0] = pluralize($URL[0]);
-                $URL[1] = ($URL[1] === '') ? 'index' : $URL[1];
-                $controller = new $URL[0]($URL[0], $URL[1]);
                 $params = [];
+                $controller = new $CONTROLLER($CONTROLLER, $ACTION);
+                $action = ($ACTION === '') ? 'index' : $ACTION;
 
-                if(method_exists($controller, $URL[1]))
+                if(method_exists($controller, $ACTION))
                 {
-                    $params = $controller->{$URL[1]}();
+                    $params = $controller->{$ACTION}();
                 }
 
                 else if(method_exists($controller, 'show'))
                 {
-                    $params = $controller->show($URL[1]);
+                    $params = $controller->show($ACTION);
                 }
 
-                if(file_exists("application/views/{$URL[0]}/{$URL[1]}.php"))
+                if(file_exists("application/views/{$CONTROLLER}/{$ACTION}.php"))
                 {
-                    $PARAMS[strtolower($URL[0])] = $params;
-                    $PARAMS['url'] = ['controller' => $URL[0], 'action' => $URL[1]];
+                    $controller = $CONTROLLER;
+                    $action = $ACTION;
+
+                    $PARAMS[strtolower($controller)] = $params;
+                    $PARAMS['url'] = ['controller' => $controller, 'action' => $action];
 
                     require_once('application/views/layout/header.php');
-                    require_once("application/views/{$URL[0]}/{$URL[1]}.php");
+                    require_once("application/views/{$CONTROLLER}/{$ACTION}.php");
                     require_once('application/views/layout/footer.php');
                 }
 
-                else if(is_numeric($URL[1]) && file_exists("application/views/{$URL[0]}/show.php"))
+                else if(is_numeric($ACTION) && file_exists("application/views/{$CONTROLLER}/show.php"))
                 {
-                    $PARAMS[strtolower($URL[0])] = $params;
-                    $PARAMS['url'] = ['controller' => $URL[0], 'action' => 'show', 'id' => $URL[1]];
+                    $controller = $CONTROLLER;
+                    $action = 'show';
+                    $id = $ACTION;
+
+                    $PARAMS[strtolower($CONTROLLER)] = $params;
+                    $PARAMS['url'] = ['controller' => $controller, 'action' => $action, 'id' => $id];
 
                     require_once('application/views/layout/header.php');
-                    require_once("application/views/{$URL[0]}/show.php");
+                    require_once("application/views/{$CONTROLLER}/show.php");
                     require_once('application/views/layout/footer.php');
                 }
             }
@@ -94,25 +105,28 @@ if(isset($_GET['url']))
 
         case 3:
 
-            if(isset($URL[0], $URL[1], $URL[2]))
+            if(isset($CONTROLLER, $ACTION, $ID))
             {
-                $URL[0] = pluralize($URL[0]);
-                $URL[1] = ($URL[1] === '') ? 'index' : $URL[1];
-                $controller = new $URL[0]($URL[0], $URL[2], $URL[1]);
                 $params = [];
+                $controller = new $CONTROLLER($CONTROLLER, $ID, $ACTION);
+                $action = ($ACTION === '') ? 'index' : $ACTION;
 
-                if(method_exists($controller, $URL[2]))
+                if(method_exists($controller, $ID))
                 {
-                    $params = $controller->{$URL[2]}($URL[1]);
+                    $params = $controller->{$ID}($ACTION);
                 }
 
-                if(file_exists("application/views/{$URL[0]}/{$URL[2]}.php"))
+                if(file_exists("application/views/{$CONTROLLER}/{$ID}.php"))
                 {
-                    $PARAMS[strtolower($URL[0])] = $params;
-                    $PARAMS['url'] = ['controller' => $URL[0], 'action' => $URL[2], 'id' => $URL[1]];
+                    $controller = $CONTROLLER;
+                    $action = $ID;
+                    $id = $ACTION;
+
+                    $PARAMS[strtolower($controller)] = $params;
+                    $PARAMS['url'] = ['controller' => $controller, 'action' => $action, 'id' => $id];
 
                     require_once('application/views/layout/header.php');
-                    require_once("application/views/{$URL[0]}/{$URL[2]}.php");
+                    require_once("application/views/{$CONTROLLER}/{$ID}.php");
                     require_once('application/views/layout/footer.php');
                 }
             }
