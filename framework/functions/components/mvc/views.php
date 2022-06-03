@@ -1,6 +1,6 @@
 <?php
 
-// Load asset configuration
+// Load application configuration
 
 require_once("framework/configuration/application.php");
 

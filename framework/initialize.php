@@ -2,9 +2,6 @@
 
 error_reporting(0);
 
-session_start();
-ob_start();
-
 // Load helper functions
 
 require_once("framework/functions/application.php");

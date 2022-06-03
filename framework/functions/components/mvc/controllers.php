@@ -1,35 +1,33 @@
 <?php
 
+// Load application configuration
+
+require_once("framework/configuration/application.php");
+
+// Redirect page to {$location}
+
 function redirect_to($location)
 {
     $url = APPLICATION_ROOT . '/' . $location;
 
     if(is_array($location))
     {
-        $url = APPLICATION_ROOT;
+        if(!isset($location['controller'])) exit;
 
-        if(isset($location['controller']))
+        $controller = $location['controller'];
+        $url .= "/{$controller}";
+
+        if(isset($location['action']))
         {
-            $controller = "{$location['controller']}";
-            $url .= "/{$controller}";
+            $url .= "/{$location['action']}";
 
-            if(isset($location['action']))
+            if(isset($location['id']))
             {
-                $url .= "/{$location['action']}";
-
-                if(isset($location['id']))
-                {
-                    $url .= "/{$location['id']}";
-                }
+                $url .= "/{$location['id']}";
             }
-        }
-        else
-        {
-            return false;
         }
     }
 
     header("Location: /{$url}");
-    
-    exit(0);
+    exit;
 }
