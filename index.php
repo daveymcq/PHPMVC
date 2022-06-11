@@ -4,17 +4,63 @@ require_once('framework/initialize.php');
 
 if(isset($_GET['url']))
 {
-    $PARAMS = [];
-    
-    $URL = explode("/", htmlentities($_GET['url']));
+    $URL = explode("/", trim(htmlentities($_GET['url'])));
 
     $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
-    $MODEL = htmlentities(singularize(trim($URL[0] ?? '')));
     $ACTION = htmlentities(trim($URL[1] ?? ''));
     $ID = htmlentities(trim($URL[2] ?? ''));
+    $MODEL = singularize($CONTROLLER);
+
+    $PARAMS = [];
 
     require_once('application/controllers/Controller.php');
     require_once('application/models/Model.php');
+
+    if(file_exists('application/configuration/routes.php'))
+    {
+        require_once('framework/classes/routing/router.php');
+
+        $application_routes_file = 'application/configuration/routes.php'; 
+        $application_routes = file_get_contents($application_routes_file, false, null, 5, strlen(file_get_contents($application_routes_file)));
+
+        if($application_routes !== false)
+        {
+            if(preg_match_all('/[\S]+/', $application_routes, $matches))
+            {
+                if(isset(end($matches)[1]))
+                {
+                    require_once($application_routes_file);
+
+                    $appliaction_route_class = trim(htmlentities(end($matches)[1]));
+                    $router = new $appliaction_route_class($URL);
+                    $routes = get_class_methods($router);
+
+                    unset($routes[array_search('__construct', $routes)]);
+                    unset($routes[array_search('Post', $routes)]);
+                    unset($routes[array_search('Get', $routes)]);
+
+                    if(count($routes))
+                    {
+                        foreach($routes as $route)
+                        {
+                            $route = $router->{$route}();
+
+                            if($route)
+                            {
+                                $URL = $route;
+                                $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
+                                $ACTION = htmlentities(trim($URL[1] ?? ''));
+                                $ID = htmlentities(trim($URL[2] ?? ''));
+                                $MODEL = singularize($CONTROLLER);
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     if(file_exists('application/controllers/' . $CONTROLLER . '.php'))
     {
@@ -25,6 +71,8 @@ if(isset($_GET['url']))
     {
         require_once('application/models/' . $MODEL . '.php');
     }
+
+    // die(var_dump($URL));
 
     switch(count($URL))
     {
@@ -134,6 +182,7 @@ if(isset($_GET['url']))
 
         break;
     }
+    
 }
 
 exit;
