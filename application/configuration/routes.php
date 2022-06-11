@@ -4,6 +4,11 @@ class Routes extends Router
 {
     public function root()
     {
+        return Router::Get("/", "/users");
+    }
+
+    public function allUsers()
+    {
         return Router::Get("/accounts", "/users");
     }
 
@@ -12,7 +17,7 @@ class Routes extends Router
         return Router::Get("/account/show/:id", "/users/:id");
     }
 
-    public function signup()
+    public function signUp()
     {
         return Router::Get("/account/signup", "/users/newUser");
     }

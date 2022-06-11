@@ -10,8 +10,8 @@ if($PARAMS['users'])
   echo "<li><strong>First Name:</strong> {$user->first_name}</li>";
   echo "<li><strong>Last Name:</strong> {$user->last_name}</li>";
 
-  echo "<br><a href='{$user->id}/edit'>Edit</a>";
-  echo "<a href='{$user->id}/delete'>Delete</a>";
+  echo "<br><a href='../edit/{$user->id}'>Edit</a>";
+  echo "<a href='../../users/{$user->id}/delete'>Delete</a>";
 }
 
 else
