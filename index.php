@@ -72,8 +72,6 @@ if(isset($_GET['url']))
         require_once('application/models/' . $MODEL . '.php');
     }
 
-    // die(var_dump($URL));
-
     switch(count($URL))
     {
         case 1:
