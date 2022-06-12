@@ -1,10 +1,5 @@
 <?php
 
-// Enable sessions and output buffer
-
-session_start();
-ob_start();
-
 // Get the name of the application root directory
 
 define('APPLICATION_PATH', str_replace("\\", "/", getcwd()));

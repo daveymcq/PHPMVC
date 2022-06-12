@@ -1,6 +1,13 @@
 <?php
 
+// Disable error reporting 
+
 error_reporting(0);
+
+// Enable sessions and output buffering
+
+session_start();
+ob_start();
 
 // Load helper functions
 
@@ -31,13 +38,4 @@ if(file_exists("framework/classes/model/". DB_ADAPTER ."/ActiveRecordModel.php")
         }
     });
 } 
-
-else
-{
-    require_once('application/views/layout/header.php');
-    echo '<p>Configuration Error: Failed to load database adapter specified in application/configuration/database.php: The ' . DB_ADAPTER . ' database adapter is not supported.</p>';
-    require_once('application/views/layout/footer.php');
-
-    exit;
-}
 

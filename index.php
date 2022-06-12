@@ -4,22 +4,18 @@ require_once('framework/initialize.php');
 
 if(isset($_GET['url']))
 {
-    $URL = explode("/", trim(htmlentities($_GET['url'])));
-
+    $URL = $_SESSION['URL'] = explode("/", trim(htmlentities($_GET['url'])));
     $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
     $ACTION = htmlentities(trim($URL[1] ?? ''));
     $ID = htmlentities(trim($URL[2] ?? ''));
     $MODEL = singularize($CONTROLLER);
-
-    $PARAMS = [];
+    $PARAMS = $_SESSION['ROUTES'] = [];
 
     require_once('application/controllers/Controller.php');
     require_once('application/models/Model.php');
 
     if(file_exists('application/configuration/routes.php'))
     {
-        require_once('framework/classes/routing/router.php');
-
         $application_routes_file = 'application/configuration/routes.php'; 
         $application_routes = file_get_contents($application_routes_file, false, null, 5, strlen(file_get_contents($application_routes_file)));
 
@@ -29,6 +25,7 @@ if(isset($_GET['url']))
             {
                 if(isset(end($matches)[1]))
                 {
+                    require_once('framework/classes/routing/router.php');
                     require_once($application_routes_file);
 
                     $appliaction_route_class = trim(htmlentities(end($matches)[1]));
@@ -43,11 +40,9 @@ if(isset($_GET['url']))
                     {
                         foreach($routes as $route)
                         {
-                            $route = $router->{$route}();
-
-                            if($route)
+                            if($route = $router->{$route}())
                             {
-                                $URL = $route;
+                                $URL = $_SESSION['URL'] = $route;
                                 $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
                                 $ACTION = htmlentities(trim($URL[1] ?? ''));
                                 $ID = htmlentities(trim($URL[2] ?? ''));

@@ -2,12 +2,13 @@
 
 class ActiveRecordModel extends MySQL
 {
-    protected $errors = [];
-    protected $params = [];
+    protected Array $errors;
+    protected Array $params;
 
     public function __construct(Array $attributes = [])
     {
         parent::__construct(APPLICATION_ROOT, $attributes);
+        $this->errors = [];
         $this->params = $attributes;
         $this->table = strtolower(pluralize(get_class($this)));
         $this->populateFieldsWithDatabase($this, $attributes);

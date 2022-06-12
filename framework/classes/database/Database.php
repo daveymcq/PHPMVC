@@ -1,9 +1,9 @@
 <?php
 class Database
 {
-    private static $connection;
-    private static $instance;
-    private static $adapter;
+    private static PDO $connection;
+    private static Database $instance;
+    private static String $adapter;
 
     public function __construct()
     {
@@ -16,7 +16,7 @@ class Database
                 try
                 {
                     $adapter_string = self::$adapter . ':host=' . DB_HOST . ';dbname=' . DB_NAME;
-                    self::$connection = (isset(self::$connection)) ? self::$connection : new PDO($adapter_string, DB_USER,DB_PASS);
+                    self::$connection = (isset(self::$connection)) ? self::$connection : new PDO($adapter_string, DB_USER, DB_PASS);
                 }
                 catch(PDOException $e)
                 {

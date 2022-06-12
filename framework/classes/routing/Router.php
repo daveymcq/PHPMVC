@@ -2,34 +2,34 @@
 
 class Router 
 {
-    protected Array $URL;
+    protected static Array $URL;
 
     public function __construct(Array $URL)
     {
-        $this->URL = $URL;
+        static::$URL = $URL;
     }
 
-    public function Get(String $from, String $to)
+    public static function Get(String $from, String $to)
     {
         if($_SERVER['REQUEST_METHOD'] == 'GET')
         {
-            $route = Router::MatchRoute($from, $to);
+            $route = static::MatchRoute($from, $to);
             return $route;
         }
     }
 
-    public function Post(String $from, String $to)
+    public static function Post(String $from, String $to)
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
-            $route = Router::MatchRoute($from, $to);
+            $route = static::MatchRoute($from, $to);
             return $route;
         }
     }
 
-    private function MatchRoute(String $from, String $to)
+    private static function MatchRoute(String $from, String $to)
     {
-        $url = $this->URL;
+        $url = static::$URL;
         $from = explode("/", trim(rtrim(htmlentities($from)), '/'));
         $to = explode("/", trim(rtrim(htmlentities($to)), '/'));
 
@@ -37,7 +37,7 @@ class Router
         {
             if(!str_contains($from[$i], ':'))
             {
-                if($url[$i] != $from[$i]) return false;
+                if($url[$i] != $from[$i]) return [];
             }
         }
 
