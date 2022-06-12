@@ -36,7 +36,7 @@ if(isset($_GET['url']))
             exit;
         }
 
-        if($application_routes !== false)
+        if($application_routes)
         {
             if(preg_match_all('/[\S]+/', $application_routes, $matches))
             {
@@ -103,6 +103,19 @@ if(isset($_GET['url']))
                                     $params = [];
                                     $controller = new $CONTROLLER($CONTROLLER);
 
+                                    if(($CONTROLLER == '') || (!file_exists("application/views/{$CONTROLLER}/index.php")))
+                                    {
+                                        $url = 'application/public/404.html';
+
+                                        if(file_exists($url))
+                                        {
+                                            $page = file_get_contents($url);
+                                            echo $page;
+                                        }
+
+                                        break;
+                                    }
+
                                     if(method_exists($controller, 'index'))
                                     {
                                          $params = $controller->index();
@@ -131,7 +144,7 @@ if(isset($_GET['url']))
                                     $params = [];
                                     $controller = new $CONTROLLER($CONTROLLER, $ACTION);
 
-                                    if($ACTION == '')
+                                    if(($CONTROLLER == '') || ($ACTION == ''))
                                     {
                                         $url = 'application/public/404.html';
 
@@ -141,7 +154,7 @@ if(isset($_GET['url']))
                                             echo $page;
                                         }
 
-                                        exit;
+                                        break;
                                     }
 
                                     if(method_exists($controller, $ACTION))
@@ -162,18 +175,15 @@ if(isset($_GET['url']))
                                         require_once('application/views/layout/footer.php');
                                     }
 
-                                    else if(is_numeric($ACTION) && file_exists("application/views/{$CONTROLLER}/show.php"))
+                                    else
                                     {
-                                        $controller = $CONTROLLER;
-                                        $action = 'show';
-                                        $id = $ACTION;
+                                        $url = 'application/public/404.html';
 
-                                        $PARAMS[strtolower($CONTROLLER)] = $params;
-                                        $PARAMS['url'] = ['controller' => $controller, 'action' => $action, 'id' => $id];
-
-                                        require_once('application/views/layout/header.php');
-                                        require_once("application/views/{$CONTROLLER}/show.php");
-                                        require_once('application/views/layout/footer.php');
+                                        if(file_exists($url))
+                                        {
+                                            $page = file_get_contents($url);
+                                            echo $page;
+                                        }
                                     }
                                 }
 
@@ -185,6 +195,19 @@ if(isset($_GET['url']))
                                 {
                                     $params = [];
                                     $controller = new $CONTROLLER($CONTROLLER, $ID, $ACTION);
+
+                                    if(($CONTROLLER == '') || ($ID == '') || ($ACTION == ''))
+                                    {
+                                        $url = 'application/public/404.html';
+
+                                        if(file_exists($url))
+                                        {
+                                            $page = file_get_contents($url);
+                                            echo $page;
+                                        }
+
+                                        break;
+                                    }
 
                                     if(method_exists($controller, $ID))
                                     {
