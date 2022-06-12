@@ -9,7 +9,6 @@ if(isset($_GET['url']))
     $ACTION = htmlentities(trim($URL[1] ?? ''));
     $ID = htmlentities(trim($URL[2] ?? ''));
     $MODEL = singularize($CONTROLLER);
-    $PARAMS = $_SESSION['ROUTES'] = [];
 
     require_once('application/controllers/Controller.php');
     require_once('application/models/Model.php');
