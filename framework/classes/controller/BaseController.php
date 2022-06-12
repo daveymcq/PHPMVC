@@ -2,7 +2,7 @@
 
 class BaseController
 {
-    public $params;
+    protected $params;
 
     public function __construct(String $controller, String $action = null, $id = null)
     {
