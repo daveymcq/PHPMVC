@@ -1,17 +1,16 @@
 <?php
 
-require_once('framework/initialize.php');
-
 if(isset($_GET['url']))
 {
+    require_once('framework/initialize.php');
+    require_once('application/models/Model.php');
+    require_once('application/controllers/Controller.php');
+    
     $URL = explode("/", trim(htmlentities($_GET['url'])));
     $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
     $ACTION = htmlentities(trim($URL[1] ?? ''));
     $ID = htmlentities(trim($URL[2] ?? ''));
     $MODEL = singularize($CONTROLLER);
-
-    require_once('application/controllers/Controller.php');
-    require_once('application/models/Model.php');
 
     if(file_exists('application/configuration/routes.php'))
     {
@@ -174,7 +173,4 @@ if(isset($_GET['url']))
 
         break;
     }
-    
 }
-
-exit;
