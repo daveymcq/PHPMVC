@@ -4,7 +4,7 @@ require_once('framework/initialize.php');
 
 if(isset($_GET['url']))
 {
-    $URL = $_SESSION['URL'] = explode("/", trim(htmlentities($_GET['url'])));
+    $URL = explode("/", trim(htmlentities($_GET['url'])));
     $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
     $ACTION = htmlentities(trim($URL[1] ?? ''));
     $ID = htmlentities(trim($URL[2] ?? ''));
@@ -41,7 +41,7 @@ if(isset($_GET['url']))
                         {
                             if($route = $router->{$route}())
                             {
-                                $URL = $_SESSION['URL'] = $route;
+                                $URL = $route;
                                 $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
                                 $ACTION = htmlentities(trim($URL[1] ?? ''));
                                 $ID = htmlentities(trim($URL[2] ?? ''));
