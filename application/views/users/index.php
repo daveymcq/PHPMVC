@@ -4,7 +4,7 @@ if(!empty($PARAMS['users']))
 {
   foreach($PARAMS['users'] as $user)
   {
-      echo "<p><a href='account/show/{$user->id}'>{$user->first_name} {$user->last_name}</a></p>";
+      echo "<p><a href='../account/show/{$user->id}'>{$user->first_name} {$user->last_name}</a></p>";
   }
 }
 
