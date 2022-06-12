@@ -25,7 +25,7 @@ class Users extends Controller
     public function delete($id)
     {
         User::find($id)->delete();
-        redirect_to("accounts");
+        redirect_to("account/list");
     }
 
     public function create()
@@ -34,7 +34,7 @@ class Users extends Controller
 
         if($user->save())
         {
-            redirect_to("accounts");
+            redirect_to("account/list");
         }
         
         redirect_to("account/signup");

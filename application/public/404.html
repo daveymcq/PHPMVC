@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+    <style>
+    * {
+      padding: 0;
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.05em;
+      text-decoration: none;
+      list-style: none;
+    }
+
+    strong, b {
+      font-weight: bold;
+      font-size: 1.5em;
+    }
+
+    section, header, footer, nav, aside {
+      display: block;
+    }
+
+    body {
+      background: #ccc;
+    }
+
+    header {
+      background: #a90329;
+      background: -moz-linear-gradient(top,  #a90329 0%, #8f0222 44%, #6d0019 100%);
+      background: -webkit-linear-gradient(top,  #a90329 0%,#8f0222 44%,#6d0019 100%);
+      background: linear-gradient(to bottom,  #a90329 0%,#8f0222 44%,#6d0019 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 );
+
+      max-width: 100vw;
+      height: 81px;
+
+      -webkit-box-shadow: 0 5px 8px #777; 
+      -moz-box-shadow: 0 5px 8px #777; 
+      box-shadow: 0 5px 8px #777; 
+    }
+
+    .cf {
+      overflow: auto;
+    }
+
+    .cf::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+
+    .logo {
+      float: left;  
+    }
+
+    .mobile {
+      display: none;
+    }
+
+    .mobile-nav-dropdown div {
+      width: 60px;
+      height: 10px;
+      margin-bottom: 8px;
+      background: #fff;
+    }
+
+    .logo .desktop, .logo .mobile {
+      line-height: 79px;
+      margin-left: 10px;
+    }
+
+    .logo a {
+      text-transform: uppercase;
+      color: #fff;
+      height: 80px;
+      font-size: 1.3em;
+      margin-left: 10px;
+    }
+
+    .logo .mobile-nav-dropdown {
+      padding: 18px 10px 8px 1px;
+    }
+
+    .logo:hover {
+      cursor: pointer;
+    }
+
+    .main-nav {
+      float: right;
+    }
+
+    .main-nav ul li a {
+      color: #fff;
+      font-size: 0.8em;
+    }
+
+    .main-nav ul li {
+      display: inline-block;
+      line-height: 77px;
+      padding: 0 1.2em;
+    }
+
+    .main-nav ul li.active {
+      background: #a90329;
+    }
+
+    .main-nav ul li:hover {
+      background: #a90329;
+      cursor: pointer;
+    }
+
+    #content-wrapper {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #content-wrapper .main-content {
+      float: left;
+      width: 74%;
+      min-height: 91.6vh;
+      padding-bottom: 1000em;
+      margin-bottom: -1000em;
+    }
+
+    #content-wrapper .sidebar {
+      float: left;
+      width: 24%;
+      min-height: 91.6vh;
+      margin-right: 1%;
+      background: #222;
+      padding-bottom: 1000em;
+      margin-bottom: -1000em;
+    }
+
+    #content-wrapper .main-content *, #content-wrapper .sidebar * {
+      padding: 15px;
+      color: #777;
+      font-size: 0.8em;
+    }
+
+    .dropdown-menu {
+      display: none; 
+    }
+
+    #footer {
+      background: #a90329;
+      background: -moz-linear-gradient(top,  #a90329 0%, #8f0222 44%, #6d0019 100%);
+      background: -webkit-linear-gradient(top,  #a90329 0%,#8f0222 44%,#6d0019 100%);
+      background: linear-gradient(to bottom,  #a90329 0%,#8f0222 44%,#6d0019 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 );
+
+      max-width: 100vw;
+      min-height: 8vh;
+      color: #fff;
+    }
+
+    #footer * {
+      font-size: 90%;
+      padding: 5px;
+    }
+
+
+    @media only screen and (max-width: 1000px) {
+      
+      header {
+        -webkit-box-shadow: none; 
+        -moz-box-shadow: none; 
+        box-shadow: none;
+        height: 80px;
+        position: fixed;
+        min-width: 100vw;
+      }
+
+      .logo .desktop {
+        position: fixed;
+        right: 1em;
+      }
+
+      #content-wrapper .sidebar {
+        display: none;
+      }
+
+      #content-wrapper .main-content {
+        width: 100vw;
+        min-height: 100vh;
+        margin-top: 81px;
+      }
+
+      .logo .mobile {
+        display: block;
+      }
+
+      .main-nav {
+        display: none;
+      }
+
+      .dropdown-menu {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        opacity: 0.9;
+      }
+
+      .dropdown-menu {
+        background: #222;
+        width: 45vw;
+        min-height: 100vh;
+      }
+
+      .dropdown-menu ul li {
+        padding-left: 1em;
+      }
+
+      .dropdown-menu ul li:first-child:hover {
+        border-top: none;
+      }
+
+      .dropdown-menu ul li:hover, .dropdown-menu ul li.active {  
+        background: #333;
+      }
+
+      .dropdown-menu ul li:hover {
+        cursor: pointer;
+      }
+
+      .dropdown-menu ul li a {
+        text-transform: none;
+        font-size: 0.9em;
+        margin-right: 12px;
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <div class="desktop">
+          <a href="#">website</a>
+        </div>
+        <div class="mobile">
+          <div class="mobile-nav-dropdown">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <nav class="dropdown-menu">
+            <ul>
+              <li><a href="#">Link A</a></li>
+              <li><a href="#">Link B</a></li>
+              <li><a href="#">Link C</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="#">Link A</a></li>
+          <li><a href="#">Link B</a></li>
+          <li><a href="#">Link C</a></li>
+        </ul>
+      </nav>
+    </header>
+    <section id="content-wrapper">
+      <aside class="sidebar">
+      </aside>
+      <div class="main-content">
+        <p>Page not found!</p>
+      </div>
+    </section>
+    <footer id="footer">
+      <div class="footer-content">
+      </div>
+    </footer>
+    <script>
+    window.onload = function()
+    {
+        var clicked = false;
+        var dropdownMenu = document.getElementsByClassName("dropdown-menu")[0];
+        var logo = document.getElementsByClassName('logo')[0];
+        var logoBackground = logo.style.background;
+        var mediaQueryCondition = window.matchMedia('(max-width: 1000px)');
+
+        mediaQueryCondition.addListener(function()
+        {
+            if(this.matches)
+            {
+                dropdownMenu.style.display = "none";
+                clicked = false;
+            }
+            else
+            {
+                logo.style.background = logoBackground;
+            }
+        });
+
+        logo.getElementsByClassName('mobile')[0].onclick = function()
+        {
+            if(mediaQueryCondition.matches)
+            {
+                clicked = !clicked;
+                dropdownMenu.style.display = (clicked) ? "block" : "none";
+                logo.style.background = (clicked) ? '#a90329' : logoBackground;
+
+                if(clicked)
+                {
+                    document.getElementById("content-wrapper").onclick = function()
+                    {
+                        dropdownMenu.style.display = "none";
+                        logo.style.background = logoBackground;
+                        clicked = false;
+                        return;
+                    };
+                }
+            }
+        };
+    };
+    </script> 
+  </body>
+</html>

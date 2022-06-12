@@ -11,12 +11,12 @@ if($PARAMS['users'])
   echo "<li><strong>Last Name:</strong> {$user->last_name}</li>";
 
   echo "<br><a href='../edit/{$user->id}'>Edit</a>";
-  echo "<a href='../../users/{$user->id}/delete'>Delete</a>";
+  echo "<a href='../../account/delete/{$user->id}'>Delete</a>";
 }
 
 else
 {
-  echo '<li>No User</li>';
+    echo '<li>No User</li>';
 }
 
 ?>

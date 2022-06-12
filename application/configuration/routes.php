@@ -9,7 +9,7 @@ class Routes extends Router
 
     public static function allUsers()
     {
-        return Router::Get("/accounts", "/users");
+        return Router::Get("/account/list", "/users");
     }
 
     public static function showUser()
