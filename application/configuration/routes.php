@@ -9,12 +9,12 @@ class Routes extends Router
 
     public static function allUsers()
     {
-        return Router::Get("/account/list", "/users");
+        return Router::Get("/account/list", "/users/index");
     }
 
     public static function showUser()
     {
-        return Router::Get("/account/show/:id", "/users/:id");
+        return Router::Get("/account/show/:id", "/users/:id/show");
     }
 
     public static function signUp()

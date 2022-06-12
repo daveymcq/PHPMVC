@@ -72,10 +72,7 @@ class Router
 
             for($i = 0; $i < count($to); $i++)
             {
-                if($to[$i])
-                {
-                    $url[$i] = $to[$i];
-                }
+                $url[$i] = $to[$i];
             }
         }
 

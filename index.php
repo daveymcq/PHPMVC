@@ -79,10 +79,10 @@ if(isset($_GET['url']))
                             exit;
                         }
 
-                        $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
-                        $ACTION = htmlentities(trim($URL[1] ?? ''));
-                        $ID = htmlentities(trim($URL[2] ?? ''));
-                        $MODEL = singularize($CONTROLLER);
+                        $CONTROLLER = strtolower(htmlentities(pluralize(trim($URL[0] ?? ''))));
+                        $ACTION = strtolower(htmlentities(trim($URL[1] ?? '')));
+                        $ID = strtolower(htmlentities(trim($URL[2] ?? '')));
+                        $MODEL = strtolower(singularize($CONTROLLER));
 
                         if(file_exists('application/controllers/' . $CONTROLLER . '.php'))
                         {
@@ -130,16 +130,23 @@ if(isset($_GET['url']))
                                 {
                                     $params = [];
                                     $controller = new $CONTROLLER($CONTROLLER, $ACTION);
-                                    $action = ($ACTION === '') ? 'index' : $ACTION;
+
+                                    if($ACTION == '')
+                                    {
+                                        $url = 'application/public/404.html';
+
+                                        if(file_exists($url))
+                                        {
+                                            $page = file_get_contents($url);
+                                            echo $page;
+                                        }
+
+                                        exit;
+                                    }
 
                                     if(method_exists($controller, $ACTION))
                                     {
                                         $params = $controller->{$ACTION}();
-                                    }
-
-                                    else if(method_exists($controller, 'show'))
-                                    {
-                                        $params = $controller->show($ACTION);
                                     }
 
                                     if(file_exists("application/views/{$CONTROLLER}/{$ACTION}.php"))
@@ -178,7 +185,6 @@ if(isset($_GET['url']))
                                 {
                                     $params = [];
                                     $controller = new $CONTROLLER($CONTROLLER, $ID, $ACTION);
-                                    $action = ($ACTION === '') ? 'index' : $ACTION;
 
                                     if(method_exists($controller, $ID))
                                     {
