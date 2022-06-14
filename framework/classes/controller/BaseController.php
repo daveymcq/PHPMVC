@@ -6,13 +6,13 @@ class BaseController
 
     public function __construct(String $controller, String $action = null, $id = null)
     {
-        if((isset($action) && ($id === null)) && ($action !== ''))
+        if((isset($action) && ($id == null)) && ($action != ''))
         {
             $this->params['controller'] = $controller;
             $this->params['action'] = $action;
         }
 
-        else if((isset($action, $id)) && ($action !== '') && ($id !== ''))
+        else if((isset($action, $id)) && ($action != '') && ($id != ''))
         {
             $this->params['controller'] = $controller;
             $this->params['action'] = $action;
