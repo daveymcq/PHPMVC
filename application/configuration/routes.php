@@ -39,6 +39,6 @@ class Routes extends Router
 
     public static function deleteUser()
     {
-        return Router::Post("/account/delete/:id", "/users/:id/delete");
+        return Router::Get("/account/delete/:id", "/users/:id/delete");
     }
 }

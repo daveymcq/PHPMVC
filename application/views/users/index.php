@@ -15,6 +15,6 @@ else
 
 ?>
 
-<br><a href="account/signup">New User</a>
+<br><a href="/account/signup">New User</a>
 
 
