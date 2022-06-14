@@ -1,18 +1,18 @@
 <h2>Account List</h2>
 <?php
 
-if(!empty($PARAMS['users']))
-{
-  foreach($PARAMS['users'] as $user)
+  if(!empty($PARAMS['users']))
   {
-      echo "<p><a href='/" . APPLICATION_ROOT . "/account/show/{$user->id}'>{$user->first_name} {$user->last_name}</a></p>";
+    foreach($PARAMS['users'] as $user)
+    {
+        echo "<strong><a href='/" . APPLICATION_ROOT . "/account/show/{$user->id}'>{$user->first_name} {$user->last_name}</a></strong><br>";
+    }
   }
-}
 
-else
-{
-  echo '<p>No Users</p>';
-}
+  else
+  {
+    echo '<p>No Users</p>';
+  }
 
 ?>
 
