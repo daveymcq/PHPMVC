@@ -1,4 +1,4 @@
-<form action="../account/create" method="post">
+<form action="/PHPMVC/account/create" method="post">
   <label for="phone">Phone</label>
   <p><input type="phone" id="phone" name="user[phone_number]" placeholder="Phone Number" maxlength="12"></p>
   <label for="email">Email</label>

@@ -1,7 +1,7 @@
 <?php if($PARAMS['users']): ?>
 <?php $user = $PARAMS['users']; ?>
 
-<form action="../update/<?php echo $user->id; ?>" method="post">
+<form action="/PHPMVC/account/update/<?php echo $user->id; ?>" method="post">
   <label for="phone">Phone</label>
   <p><input type="phone" id="phone" name="user[phone_number]" placeholder="Phone Number" maxlength="12" value="<?php echo $user->phone_number; ?>"></p>
   <label for="email">Email</label>
