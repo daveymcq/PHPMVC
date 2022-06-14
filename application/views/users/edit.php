@@ -1,3 +1,5 @@
+<h2>Edit Account</h2>
+
 <?php if($PARAMS['users']): ?>
 <?php $user = $PARAMS['users']; ?>
 

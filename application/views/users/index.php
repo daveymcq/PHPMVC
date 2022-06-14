@@ -1,3 +1,4 @@
+<h2>Account List</h2>
 <?php
 
 if(!empty($PARAMS['users']))

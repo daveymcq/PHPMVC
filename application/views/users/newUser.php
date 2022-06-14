@@ -1,3 +1,4 @@
+<h2>Create New Account</h2>
 <form action="<?php echo "/" . APPLICATION_ROOT . "/account/create"; ?>" method="post">
   <label for="phone">Phone</label>
   <p><input type="phone" id="phone" name="user[phone_number]" placeholder="Phone Number" maxlength="12"></p>
