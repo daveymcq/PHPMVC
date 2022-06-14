@@ -5,13 +5,13 @@ if($PARAMS['users'])
 {
   $user = $PARAMS['users'];
 
-  echo "<li><strong>Phone:</strong> {$user->phone_number}</li>";
-  echo "<li><strong>Email:</strong> {$user->email}</li>";
-  echo "<li><strong>First Name:</strong> {$user->first_name}</li>";
-  echo "<li><strong>Last Name:</strong> {$user->last_name}</li>";
+  echo "<li><strong>Phone:&nbsp;</strong>{$user->phone_number}</li>";
+  echo "<li><strong>Email:&nbsp;</strong>{$user->email}</li>";
+  echo "<li><strong>First Name:&nbsp;</strong>{$user->first_name}</li>";
+  echo "<li><strong>Last Name:&nbsp;</strong>{$user->last_name}</li>";
 
-  echo "<br><a href='/PHPMVC/account/edit/{$user->id}'>Edit</a>";
-  echo "<a href='/PHPMVC/account/delete/{$user->id}'>Delete</a>";
+  echo "<br><a href='/" . APPLICATION_ROOT . "/account/edit/{$user->id}'>Edit</a>";
+  echo "<a href='/" . APPLICATION_ROOT . "/account/delete/{$user->id}'>Delete</a>";
 }
 
 else
