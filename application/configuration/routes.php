@@ -4,7 +4,7 @@ class Routes extends Router
 {
     public static function root()
     {
-        return Router::Get("/", "/users/index");
+        return Router::Get("/", "/homes/index");
     }
 
     public static function allUsers()
