@@ -2,7 +2,7 @@
 
 function pluralize(String $singular)
 {
-    $plural = singularize($singular);
+    $plural = trim(htmlentities(singularize($singular)));
 
     if(substr($plural, strlen($plural) - 1, strlen($plural)) === 'y')
     {
@@ -26,7 +26,7 @@ function pluralize(String $singular)
 
 function singularize(String $plural)
 {
-    $singular = $plural;
+    $singular = trim(htmlentities($plural));
 
     if(substr($plural, strlen($plural) - 3, strlen($plural)) === 'ies')
     {
