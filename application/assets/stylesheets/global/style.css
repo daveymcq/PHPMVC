@@ -35,6 +35,10 @@ header {
   box-shadow: 0 5px 8px #777; 
 }
 
+input[type="submit"]:hover, input[type="button"]:hover {
+  cursor: pointer;
+}
+
 .cf {
   overflow: auto;
 }
