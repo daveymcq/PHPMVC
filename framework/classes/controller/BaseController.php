@@ -2,9 +2,9 @@
 
 class BaseController
 {
-    protected Array $params;
+    protected array $params;
 
-    public function __construct(String $controller, String $action = null, $id = null)
+    public function __construct(string $controller, string $action = null, $id = null)
     {
         if((isset($action) && ($id == null)) && ($action != ''))
         {

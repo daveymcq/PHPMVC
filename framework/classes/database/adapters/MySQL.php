@@ -1,14 +1,72 @@
 <?php
 
-class MySQL extends Database
+class MySQL extends Database implements CommonDatabaseActions, Validation
 {
-    public function __construct(String $table, Array $attributes = [])
+    public function __construct(string $table, array $attributes = [])
     {
         $this->table = strtolower($table);
         $this->params = $attributes;
     }
 
-    protected function populateFieldsWithDatabase(ActiveRecordModel $object, Array $attributes = [])
+    // Validation
+
+    public function validates_presence_of(string $attribute)
+    {
+        if(strlen($this->$attribute)) 
+        {
+            return true;
+        }
+
+        $this->errors['full_messages'][$attribute] = "{$attribute} must be present.";
+        $_SESSION['VALIDATION_ERRORS'][get_class($this)][] = $this->errors['full_messages'][$attribute];
+
+        return false;
+    }
+
+    public function validates_length_of(string $attribute, int $minimum, int $maximum)
+    {
+        if((strlen($this->$attribute) >= $minimum) && (strlen($this->$attribute) < $maximum)) 
+        {
+            return true;
+        }
+
+        $this->errors['full_messages'][$attribute] = "{$attribute} must be between {$minimum} and {$maximum} characters.";
+        $_SESSION['VALIDATION_ERRORS'][get_class($this)][] = $this->errors['full_messages'][$attribute];
+
+        return false;
+    }
+
+    public function validates_format_of(string $attribute, string $regex)
+    {
+        if(preg_match($regex, $this->$attribute)) 
+        {
+            return true;
+        }
+
+        $this->errors['full_messages'][$attribute] = "{$attribute} is invalid.";
+        $_SESSION['VALIDATION_ERRORS'][get_class($this)][] = $this->errors['full_messages'][$attribute];
+
+        return false;
+    }
+
+    public function validates_uniqueness_of(string $attribute)
+    {
+        $object = $this->find_by($attribute, $this->$attribute);
+
+        if($object === null) 
+        {
+            return true;
+        }
+
+        $this->errors['full_messages'][$attribute] = "{$attribute} already exists.";
+        $_SESSION['VALIDATION_ERRORS'][get_class($this)][] = $this->errors['full_messages'][$attribute];
+
+        return false;
+    }
+
+    // CommonDatabaseActions
+
+    public function populateFieldsWithDatabase(ActiveRecordModel $object, array $attributes = [])
     {
         $table = $this->table;
         $schema = (empty($attributes)) ? $this->params : $attributes;
@@ -36,15 +94,18 @@ class MySQL extends Database
                 }
             }
 
-            if(property_exists($object, 'errors')) {
+            if(property_exists($object, 'errors')) 
+            {
                 unset($object->errors);
             }
 
-            if(property_exists($object, 'params')) {
+            if(property_exists($object, 'params')) 
+            {
                 unset($object->params);
             }
 
-            if(property_exists($object, 'table')) {
+            if(property_exists($object, 'table')) 
+            {
                 unset($object->table);
             }
         }
@@ -52,7 +113,7 @@ class MySQL extends Database
         return $object;
     }
 
-    public static function query(String $sql, Array $conditions = [])
+    public static function query(string $sql, array $conditions = [])
     {
         $query = (static::getInstance()->getConnection())->prepare($sql);
         $select_query = (strtoupper(explode(' ', $sql)[0]) === 'SELECT');
@@ -75,7 +136,7 @@ class MySQL extends Database
         return $results;
     }
 
-    public static function where(Array $conditions)
+    public static function where(array $conditions)
     {
         $table = strtolower(pluralize(get_called_class()));
         $number_of_conditions = count($conditions);
@@ -126,13 +187,227 @@ class MySQL extends Database
         return null;
     }
 
+    public function save()
+    {
+        if(!$this->exists())
+        {
+            $attributes = get_object_vars($this);
+            $object = $this->create($attributes);
+
+            $object = (is_array($object)) ? end($object) : $object;
+
+            if($object) 
+            {
+                $this->id = $object->id;
+            }
+            
+            return $object;
+        }
+
+        else
+        {
+            $attributes = get_object_vars($this);
+            $object = $this->update($attributes);
+
+            $object = (is_array($object)) ? end($object) : $object;
+
+            if($object) 
+            {
+                $this->id = $object->id;
+            }
+            
+            return $object;
+        }
+        
+        return false;
+    }
+
+    public function exists()
+    {
+        $attributes = get_object_vars($this);
+
+        if(count($attributes))
+        {
+            if(isset($attributes['id']))
+            {
+                $object = static::find($attributes['id']);
+                return ($object) ? true : false;
+            }
+        }
+
+        return false;
+    }
+
+    public function update(array $new_attributes)
+    {
+        $object = new (get_called_class())($new_attributes);
+
+        if(method_exists(get_class($object), 'validations'))
+        {
+            $object->validations();
+        }
+
+        if(empty($object->errors))
+        {
+            $attributes = get_object_vars($this);
+
+            foreach($new_attributes as $attribute => $value)
+            {
+                if(isset($attributes[$attribute]))
+                {
+                    $attributes[$attribute] = $value;
+                }
+            }
+
+            if(isset($attributes['id']))
+            {
+                $id = $attributes['id'];
+                unset($attributes['errors'], $attributes['id'], $attributes['table'], $attributes['params']);
+
+                $number_of_attributes = count($attributes);
+
+                if($number_of_attributes)
+                {
+                    $table = strtolower(pluralize(get_class($this)));
+                    $column_names = array_keys($attributes);
+                    $sql = "UPDATE `{$table}` SET ";
+                    $sql_values = '';
+                    $sql_where = "`id` = '{$id}'";
+
+                    foreach($column_names as $attribute)
+                    {
+                        if($number_of_attributes > 0)
+                        {
+                            $sql_values .= " `{$attribute}` = ?";
+
+                            if($number_of_attributes > 1)
+                            {
+                                $sql_values .= ', ';
+                            }
+                        }
+
+                        $number_of_attributes--;
+                    }
+
+                    $sql .= "{$sql_values} WHERE {$sql_where}";
+                    $result = static::query($sql, $attributes);
+
+                    if($result)
+                    {
+                        $object = static::where($attributes);
+                        return $object;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public function delete()
+    {
+        $attributes = get_object_vars($this);
+        $number_of_attributes = count($attributes);
+
+        if(count($attributes))
+        {
+            unset($attributes['errors'], $attributes['table'], $attributes['params']);
+
+            $table = strtolower(pluralize(get_class($this)));
+            $number_of_attributes = count($attributes);
+            $sql = 'DELETE FROM `' . $table . '` WHERE ';
+            $column_names = array_keys($attributes);
+
+            foreach($column_names as $attribute)
+            {
+                if($number_of_attributes > 0)
+                {
+                    $sql .= "`{$attribute}` = ?";
+
+                    if($number_of_attributes > 1)
+                    {
+                        $sql .= " AND ";
+                    }
+                }
+
+                $number_of_attributes--;
+            }
+
+            $result = static::query($sql, $attributes);
+
+            if($result)
+            {
+                unset($attributes['id']);
+                return new static($attributes);
+            }
+        }
+
+        return false;
+    }
+
+    public static function create(array $attributes)
+    {
+        $object = new (get_called_class())($attributes);
+
+        if(method_exists(get_called_class(), 'validations'))
+        {
+            $object->validations();
+        }
+
+        if(empty($object->errors))
+        {
+            $table = strtolower(pluralize(get_called_class()));
+            unset($attributes['errors'], $attributes['id'], $attributes['table'], $attributes['params']);
+
+            $number_of_attributes = count($attributes);
+
+            if($number_of_attributes)
+            {
+                $sql = 'INSERT INTO `' . $table . '`';
+                $sql_columns = '';
+                $sql_values = '';
+
+                $column_names = array_keys($attributes);
+
+                foreach($column_names as $attribute)
+                {
+                    if($number_of_attributes > 0)
+                    {
+                        $sql_columns .= "`{$attribute}`";
+                        $sql_values .= "?";
+
+
+                        if($number_of_attributes > 1)
+                        {
+                            $sql_columns .= ', ';
+                            $sql_values .= ', ';
+                        }
+                    }
+
+                    $number_of_attributes--;
+                }
+
+                $sql .= " ({$sql_columns}) VALUES({$sql_values})";
+                $result = static::query($sql, $attributes);
+
+                if($result)
+                {
+                    $object = static::where($attributes);
+                    return $object;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public static function find($id)
     {
         $object = static::where(['id' => $id]);
         return (is_array($object)) ? end($object) : $object;
     }
 
-    public static function find_by(String $column, $value)
+    public static function find_by(string $column, $value)
     {
         return static::where([$column => $value]);
     }

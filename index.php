@@ -52,10 +52,11 @@ if(isset($_GET['url']))
                     unset($routes[array_search('__construct', $routes)]);
                     unset($routes[array_search('Post', $routes)]);
                     unset($routes[array_search('Get', $routes)]);
+                    unset($routes[array_search('Put', $routes)]);
 
                     if(count($routes))
                     {
-                        $URL = [];
+                        $URL = null;
 
                         foreach($routes as $route)
                         {
@@ -66,7 +67,7 @@ if(isset($_GET['url']))
                             }
                         }
 
-                        if(empty($URL))
+                        if($URL === null)
                         {
                             $url = 'application/public/404.html';
 

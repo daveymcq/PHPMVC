@@ -2,17 +2,17 @@
 <ul>
 <?php
 
-  if($PARAMS['users'])
-  {
-    $user = $PARAMS['users'];
+  $user = (new Request('users'))->requestObject;
 
+  if($user)
+  {
     echo "<strong>Phone:&nbsp;</strong>{$user->phone_number}<br>";
     echo "<strong>Email:&nbsp;</strong>{$user->email}<br>";
     echo "<strong>First Name:&nbsp;</strong>{$user->first_name}<br>";
     echo "<strong>Last Name:&nbsp;</strong>{$user->last_name}<br>";
 
-    echo "<br><a href='/" . APPLICATION_ROOT . "/account/edit/{$user->id}'>Edit</a>";
-    echo "<a href='/" . APPLICATION_ROOT . "/account/delete/{$user->id}'>Delete</a>";
+    echo "<br><a href='" . route("/account/edit/{$user->id}") . "'>Edit</a>";
+    echo "<a href='" . route("/account/delete/{$user->id}") . "'>Delete</a>";
   }
 
   else

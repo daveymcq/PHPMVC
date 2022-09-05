@@ -6,7 +6,7 @@ require_once("framework/configuration/application.php");
 
 // CSS Helper function
 
-function stylesheet_link_tag(String $URL)
+function stylesheet_link_tag(string $URL)
 {
     $stylesheet = STYLESHEETS_ASSETS_URL . '/' . trim(rtrim($URL, '.css')) . '.css';
 
@@ -27,7 +27,7 @@ function stylesheet_link_tag(String $URL)
 
 // JavaScript Helper function
 
-function javascript_include_tag(String $URL)
+function javascript_include_tag(string $URL)
 {
     $javascript = JAVASCRIPTS_ASSETS_URL . '/' . trim(rtrim($URL, '.js')) . '.js';
 

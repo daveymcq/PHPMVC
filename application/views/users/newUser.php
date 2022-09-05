@@ -1,5 +1,16 @@
+<?php 
+
+  $user = (new Request('users'))->requestObject;
+
+  if($user)
+  {
+      error_messages_for($user);
+  }
+  
+?>
+
 <h2>Create New Account</h2>
-<form action="<?php echo "/" . APPLICATION_ROOT . "/account/create"; ?>" method="post">
+<form action="<?php echo route('/account/create'); ?>" method="post">
   <label for="phone">Phone</label>
   <p><input type="phone" id="phone" style="width:30%;" name="user[phone_number]" placeholder="Phone Number" maxlength="12"></p>
   <label for="email">Email</label>

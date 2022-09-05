@@ -1,9 +1,14 @@
 <h2>Edit Account</h2>
 
-<?php if($PARAMS['users']): ?>
-<?php $user = $PARAMS['users']; ?>
+<?php 
 
-<form action="<?php echo "/" . APPLICATION_ROOT . "/account/update/{$user->id}"; ?>" method="post">
+  $user = (new Request('users'))->requestObject;
+
+  if($user):
+    error_messages_for($user);
+?>
+
+<form action="<?php echo route("/account/update/{$user->id}"); ?>" method="post">
   <label for="phone">Phone</label>
   <p><input type="phone" id="phone" style="width:30%;" name="user[phone_number]" placeholder="Phone Number" maxlength="12" value="<?php echo $user->phone_number; ?>"></p>
   <label for="email">Email</label>

@@ -46,7 +46,7 @@ class Users extends Controller
 
         if($user && $user->update($_POST['user']))
         {
-          redirect_to("account/show/{$user->id}");
+            redirect_to("account/show/{$user->id}");
         }
         
         redirect_to("account/edit/{$user->id}");

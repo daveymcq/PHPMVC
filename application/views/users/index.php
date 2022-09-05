@@ -1,11 +1,12 @@
 <h2>Account List</h2>
 <?php
+  $users = (new Request('users'))->requestObject;
 
-  if(!empty($PARAMS['users']))
+  if(!empty($users))
   {
-    foreach($PARAMS['users'] as $user)
+    foreach($users as $user)
     {
-        echo "<strong><a href='/" . APPLICATION_ROOT . "/account/show/{$user->id}'>{$user->first_name} {$user->last_name}</a></strong><br>";
+        echo "<strong><a href='" . route("/account/show/{$user->id}") . "'>{$user->first_name} {$user->last_name}</a></strong><br>";
     }
   }
 
@@ -16,6 +17,6 @@
 
 ?>
 
-<br><a href="/<?php echo APPLICATION_ROOT; ?>/account/signup">New User</a>
+<br><a href="<?php echo route('/account/signup'); ?>">New User</a>
 
 

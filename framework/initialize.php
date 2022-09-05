@@ -25,9 +25,11 @@ require_once("framework/configuration/application.php");
 if(file_exists("framework/classes/model/". DB_ADAPTER ."/ActiveRecordModel.php"))
 {
     require_once("framework/classes/controller/BaseController.php");
+    require_once("framework/classes/database/CommonDatabaseActions.php");
+    require_once("framework/classes/database/Validation.php");
     require_once("framework/classes/database/Database.php");
     require_once("framework/classes/database/adapters/" . DB_ADAPTER . ".php");
-
+    require_once("framework/classes/routing/Request.php");
     require_once("framework/classes/model/". DB_ADAPTER ."/ActiveRecordModel.php");
 
     spl_autoload_register(function($class)
