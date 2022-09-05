@@ -1,9 +1,5 @@
 <?php
 
-// Load application configuration
-
-require_once("framework/configuration/application.php");
-
 // CSS Helper function
 
 function stylesheet_link_tag(string $URL)
@@ -44,4 +40,25 @@ function javascript_include_tag(string $URL)
     }
 
     return $javascript_include_tag;
+}
+
+function error_messages_for(ActiveRecordModel $object)
+{
+    if(isset($_SESSION['VALIDATION_ERRORS'][get_class($object)]))
+    {
+        $errors = $_SESSION['VALIDATION_ERRORS'][get_class($object)];
+        unset($_SESSION['VALIDATION_ERRORS'][get_class($object)]);
+
+        foreach($errors as $error)
+        {
+            $error = '<p>* ' . ucfirst(implode(' ', explode('_', htmlentities($error)))) . '</p>';
+            echo $error;
+        }
+    }
+}
+
+function route(string $url)
+{
+    $route = htmlentities('/' . APPLICATION_ROOT . $url);
+    return $route;
 }
