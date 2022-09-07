@@ -46,7 +46,7 @@ class Router
         {
             if(!str_contains($from[$i], ':'))
             {
-                if($url[$i] != $from[$i]) return [];
+                if((isset($url[$i])) && ($url[$i] != $from[$i])) return [];
             }
         }
 

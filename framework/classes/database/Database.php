@@ -16,12 +16,14 @@ class Database
 
                 try
                 {
+                    $options = [ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ];
                     $adapter_string = self::$adapter . ':host=' . DB_HOST . ';dbname=' . DB_NAME;
-                    self::$connection = (isset(self::$connection)) ? self::$connection : new PDO($adapter_string, DB_USER, DB_PASS);
+                    self::$connection = (isset(self::$connection)) ? self::$connection : new PDO($adapter_string, DB_USER, DB_PASS, $options);
                 }
                 catch(PDOException $e)
                 {
-                    die($e->getMessage());
+                    echo $e->getMessage();
+                    exit;
                 }
 
             break;

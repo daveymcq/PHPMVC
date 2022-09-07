@@ -1,5 +1,6 @@
 <h2>Account List</h2>
 <?php
+
   $users = (new Request('users'))->requestObject;
 
   if(!empty($users))

@@ -2,7 +2,7 @@
 
 class MySQL extends Database implements CommonDatabaseActions, Validation
 {
-    public function __construct(string $table, array $attributes = [])
+    public function __construct(string $table, array $attributes = [], bool $associations = true)
     {
         $this->table = strtolower($table);
         $this->params = $attributes;
@@ -66,7 +66,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
 
     // CommonDatabaseActions
 
-    public function populateFieldsWithDatabase(ActiveRecordModel $object, array $attributes = [])
+    public function populateFieldsWithDatabase(ActiveRecordModel $object, array $attributes = [], $associations = true)
     {
         $table = $this->table;
         $schema = (empty($attributes)) ? $this->params : $attributes;
@@ -82,32 +82,64 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
             {
                 if(!in_array($column, $exclusions))
                 {
-                    $object->{$column} = (isset($schema[$column])) ? $schema[$column] : '';
-
-                    $association = strstr($column, '_id', true);
-
-                    if($association && ($object->{$column} != ''))
+                    if(isset($schema[$column]))
                     {
-                        $object->{$association} = $association::find($object->{$column});
-                        unset($object->{$column});
-                    }
+                        $object->{$column} = $schema[$column];
+
+                        if($associations)
+                        {
+                            $association = ucfirst(strstr($column, '_id', true));
+
+                            if($association)
+                            {
+                                $foreign_key = singularize($table) . '_id';
+                                $associated_table = pluralize(lcfirst($association));
+                                $sql = "SELECT * FROM `{$associated_table}` WHERE `{$foreign_key}` = ?";
+                                $associated_object_attibutes = static::query($sql, [$object->{$column}]);
+
+                                if(count($associated_object_attibutes) === 1)
+                                {
+                                    $associated_object_attibutes = $associated_object_attibutes[0];
+                                    $associated_object = new $association($associated_object_attibutes, false);
+                                    $association = lcfirst($association);
+                                    $foreign_key = singularize($table) . '_id';
+                                    $object->{$association} = $associated_object;
+                                    unset($object->{$column});
+                                    unset($associated_object->$foreign_key);
+                                }
+
+                                else if(count($associated_object_attibutes) > 1)
+                                {
+                                    foreach($associated_object_attibutes as $associated_object_attibute)
+                                    {
+                                        $associated_object = new $association($associated_object_attibute, false);
+                                        $association = lcfirst($association);
+                                        $foreign_key = singularize($table) . '_id';
+                                        $object->{pluralize($association)}[] = $associated_object;
+                                        unset($object->{$column});
+                                        unset($associated_object->$foreign_key);
+                                    }
+                                }
+                            }
+                        }
+                    }   
                 }
             }
+        }
 
-            if(property_exists($object, 'errors')) 
-            {
-                unset($object->errors);
-            }
+        if(property_exists($object, 'errors')) 
+        {
+            unset($object->errors);
+        }
 
-            if(property_exists($object, 'params')) 
-            {
-                unset($object->params);
-            }
+        if(property_exists($object, 'params')) 
+        {
+            unset($object->params);
+        }
 
-            if(property_exists($object, 'table')) 
-            {
-                unset($object->table);
-            }
+        if(property_exists($object, 'table')) 
+        {
+            unset($object->table);
         }
 
         return $object;
@@ -259,6 +291,12 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
                 }
             }
 
+            foreach(array_keys($attributes) as $attribute)
+            {
+                if(is_subclass_of($attributes[$attribute], 'ActiveRecordModel')) unset($attributes[$attribute]);
+                if(is_array($attributes[$attribute])) unset($attributes[$attribute]);
+            }
+
             if(isset($attributes['id']))
             {
                 $id = $attributes['id'];
@@ -404,7 +442,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
     public static function find($id)
     {
         $object = static::where(['id' => $id]);
-        return (is_array($object)) ? end($object) : $object;
+        return (is_array($object)) ? $object[0] : $object;
     }
 
     public static function find_by(string $column, $value)
