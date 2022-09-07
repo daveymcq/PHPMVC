@@ -24,8 +24,26 @@ class Users extends Controller
 
     public function delete($id)
     {
-        User::find($id)->delete();
-        redirect_to("account/list");
+        $user = User::find($id);
+
+        if($user)
+        {
+            if(isset($user->post))
+            {
+                $user->post->delete();
+            }
+
+            if(isset($user->posts))
+            {
+                for($i = 0; $i < count($user->posts); $i++)
+                {
+                    $user->posts[$i]->delete();
+                } 
+            }
+
+            $user->delete();
+            redirect_to("account/list");
+        }
     }
 
     public function create()
