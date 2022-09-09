@@ -8,15 +8,6 @@ class Router
     {
         static::$URL = $URL;
     }
-    
-    public static function Root(string $to)
-    {
-        if($_SERVER['REQUEST_METHOD'] === 'GET')
-        {
-            $route = static::MatchRoute('/', $to);
-            return $route;
-        }
-    }    
 
     public static function Get(string $from, string $to)
     {
@@ -48,27 +39,14 @@ class Router
     private static function MatchRoute(string $from, string $to)
     {
         $url = static::$URL;
-        $to = explode("/", trim(rtrim(htmlentities($to)), '/'));
         $from = explode("/", trim(rtrim(htmlentities($from)), '/'));
-
-        if((count($url) === 2) && (($url[0] === '') && ($url[1] === '')))
-        {
-            return $to;
-        }
-
-        if(count($url) != count($from)) 
-        {
-            return [];
-        }
+        $to = explode("/", trim(rtrim(htmlentities($to)), '/'));
 
         for($i = 0; $i < count($from); $i++)
         {
             if(!str_contains($from[$i], ':'))
             {
-                if((isset($url[$i])) && ($url[$i] != $from[$i])) 
-                {
-                    return [];
-                }
+                if((isset($url[$i])) && ($url[$i] != $from[$i])) return [];
             }
         }
 
@@ -97,6 +75,20 @@ class Router
             }
         }
 
-        return $to;
+        if(count($to))
+        {
+            $url = [];
+
+            for($i = 0; $i < count($to); $i++)
+            {
+                $url[$i] = $to[$i];
+            }
+        }
+
+        if(count(static::$URL) > count($url)) {
+            return [];
+        }
+
+        return $url;
     }
 }

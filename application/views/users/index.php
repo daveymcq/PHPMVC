@@ -18,6 +18,6 @@
 
 ?>
 
-<br><a href="<?php echo route('/account/signup'); ?>">New User</a>
+<br><a href="<?php echo route('/account/new'); ?>">New User</a>
 
 

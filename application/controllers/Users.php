@@ -42,7 +42,7 @@ class Users extends Controller
             }
 
             $user->delete();
-            redirect_to("account/list");
+            redirect_to("accounts");
         }
     }
 
@@ -52,10 +52,10 @@ class Users extends Controller
 
         if($user->save())
         {
-            redirect_to("account/list");
+            redirect_to("accounts");
         }
         
-        redirect_to("account/signup");
+        redirect_to("account/new");
     }
 
     public function update($id)

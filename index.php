@@ -50,6 +50,7 @@ if(isset($_GET['url']))
                     $routes = get_class_methods($router);
 
                     unset($routes[array_search('__construct', $routes)]);
+                    unset($routes[array_search('Root', $routes)]);
                     unset($routes[array_search('Post', $routes)]);
                     unset($routes[array_search('Get', $routes)]);
                     unset($routes[array_search('Put', $routes)]);

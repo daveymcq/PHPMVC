@@ -25,7 +25,7 @@ class Posts extends Controller
     public function delete($id)
     {
         Post::find($id)->delete();
-        redirect_to("posts/list");
+        redirect_to("account/posts");
     }
 
     public function create()
@@ -34,10 +34,10 @@ class Posts extends Controller
 
         if($post->save())
         {
-            redirect_to("posts/list");
+            redirect_to("account/posts/list");
         }
         
-        redirect_to("posts/new");
+        redirect_to("account/posts/new");
     }
 
     public function update($id)
@@ -46,9 +46,9 @@ class Posts extends Controller
 
         if($post && $post->update($_POST['post']))
         {
-            redirect_to("posts/show/{$post->id}");
+            redirect_to("account/posts/show/{$post->id}");
         }
         
-        redirect_to("posts/edit/{$post->id}");
+        redirect_to("account/posts/edit/{$post->id}");
     }
 }

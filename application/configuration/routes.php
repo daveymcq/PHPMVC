@@ -2,14 +2,14 @@
 
 class Routes extends Router
 {
-    public static function root()
+    public static function RootRoute()
     {
-        return Routes::Get("/", "/homes/index");
+        return Routes::Root("/homes/index");
     }
 
     public static function allUsers()
     {
-        return Routes::Get("/account/list", "/users/index");
+        return Routes::Get("/accounts", "/users/index");
     }
 
     public static function showUser()
@@ -19,7 +19,7 @@ class Routes extends Router
 
     public static function signUp()
     {
-        return Routes::Get("/account/signup", "/users/newUser");
+        return Routes::Get("/account/new", "/users/newUser");
     }
 
     public static function createUser()
@@ -44,17 +44,17 @@ class Routes extends Router
 
     public static function allPosts()
     {
-        return Routes::Get("/posts/list", "/posts/index");
+        return Routes::Get("/account/posts", "/posts/index");
     }
 
     public static function showPost()
     {
-        return Routes::Get("/posts/show/:id", "/posts/:id/show");
+        return Routes::Get("/account/posts/show/:id", "/posts/:id/show");
     }
 
     public static function newPost()
     {
-        return Routes::Get("/posts", "/posts/newPost");
+        return Routes::Get("/account/posts/new", "/posts/newPost");
     }
 
     public static function createPost()
@@ -64,7 +64,7 @@ class Routes extends Router
 
     public static function editPost()
     {
-        return Routes::Get("/posts/edit/:id", "/posts/:id/edit");
+        return Routes::Get("/account/posts/edit/:id", "/posts/:id/edit");
     }
 
     public static function updatePost()
@@ -74,6 +74,8 @@ class Routes extends Router
 
     public static function deletePost()
     {
-        return Routes::Get("/posts/delete/:id", "/posts/:id/delete");
+        return Routes::Get("/account/posts/delete/:id", "/posts/:id/delete");
     }
 }
+
+?>
