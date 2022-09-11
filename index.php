@@ -6,9 +6,9 @@ if(isset($_GET['url']))
     
     if(file_exists('application/configuration/routes.php'))
     {
-        require_once('framework/initialize.php');
-        require_once('application/models/Model.php');
+        require_once('framework/configuration/initialize.php');
         require_once('application/controllers/Controller.php');
+        require_once('application/models/Model.php');
 
         $application_routes_file = 'application/configuration/routes.php'; 
         $application_routes = file_get_contents($application_routes_file, false, null, 5, strlen(file_get_contents($application_routes_file)));
