@@ -49,11 +49,17 @@ if(isset($_GET['url']))
                     $router = new $appliaction_route_class($URL);
                     $routes = get_class_methods($router);
 
+                    $CONTROLLER = '';
+                    $ACTION = '';
+                    $MODEL = '';
+                    $ID = '';
+
                     unset($routes[array_search('__construct', $routes)]);
-                    unset($routes[array_search('Root', $routes)]);
-                    unset($routes[array_search('Post', $routes)]);
-                    unset($routes[array_search('Get', $routes)]);
-                    unset($routes[array_search('Put', $routes)]);
+                    unset($routes[array_search('match', $routes)]);
+                    unset($routes[array_search('root', $routes)]);
+                    unset($routes[array_search('post', $routes)]);
+                    unset($routes[array_search('get', $routes)]);
+                    unset($routes[array_search('put', $routes)]);
 
                     if(count($routes))
                     {

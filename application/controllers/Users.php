@@ -42,7 +42,7 @@ class Users extends Controller
             }
 
             $user->delete();
-            redirect_to("accounts");
+            redirect_to("accounts/all");
         }
     }
 
@@ -52,7 +52,7 @@ class Users extends Controller
 
         if($user->save())
         {
-            redirect_to("accounts");
+            redirect_to("accounts/all");
         }
         
         redirect_to("account/new");
