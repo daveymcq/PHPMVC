@@ -33,10 +33,8 @@ header {
   -webkit-box-shadow: 0 5px 8px #777; 
   -moz-box-shadow: 0 5px 8px #777; 
   box-shadow: 0 5px 8px #777; 
-}
 
-input[type="submit"]:hover, input[type="button"]:hover {
-  cursor: pointer;
+  border-bottom: 1px solid #777 !important;
 }
 
 .cf {
@@ -136,6 +134,31 @@ input[type="submit"]:hover, input[type="button"]:hover {
   padding: 15px;
   color: #777;
   font-size: 0.8em;
+}
+
+input {
+  border-radius: 3px;
+  border: 1px solid #777;
+}
+
+button, input[type="submit"], input[type="button"] {
+  
+  background: #a90329;
+  background: -moz-linear-gradient(top,  #a90329 0%, #8f0222 44%, #6d0019 100%);
+  background: -webkit-linear-gradient(top,  #a90329 0%,#8f0222 44%,#6d0019 100%);
+  background: linear-gradient(to bottom,  #a90329 0%,#8f0222 44%,#6d0019 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019',GradientType=0 );
+
+  color: #fff !important;
+  font-size: 1.1em !important;
+  border: none;
+  padding: 10px !important;
+
+}
+
+button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+  cursor: pointer;
+  background: #a90329;
 }
 
 .dropdown-menu {
