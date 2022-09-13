@@ -38,6 +38,11 @@ if(file_exists("framework/classes/model/". DB_ADAPTER ."/ActiveRecordModel.php")
         {
             require_once("application/models/{$class}.php");
         }
+
+        else if(file_exists("application/controllers/{$class}.php"))
+        {
+            require_once("application/controllers/{$class}.php");
+        }
     });
 } 
 

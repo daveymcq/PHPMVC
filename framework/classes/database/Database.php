@@ -12,12 +12,12 @@ class Database
 
         switch(self::$adapter)
         {
-            case 'mysql':
+            case 'MySQL':
 
                 try
                 {
                     $options = [ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ];
-                    $adapter_string = self::$adapter . ':host=' . DB_HOST . ';dbname=' . DB_NAME;
+                    $adapter_string = strtolower(self::$adapter) . ':host=' . DB_HOST . ';dbname=' . strtolower(DB_NAME);
                     self::$connection = (isset(self::$connection)) ? self::$connection : new PDO($adapter_string, DB_USER, DB_PASS, $options);
                 }
                 catch(PDOException $e)

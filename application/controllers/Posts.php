@@ -12,7 +12,7 @@ class Posts extends Controller
         return Post::find($id);
     }
 
-    public function newUser()
+    public function newPost()
     {
         return new Post();
     }

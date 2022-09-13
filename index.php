@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if(isset($_GET['url']))
 {
     $URL = explode("/", trim(htmlentities($_GET['url'])));
@@ -42,7 +45,7 @@ if(isset($_GET['url']))
             {
                 if(isset(end($matches)[1]))
                 {
-                    require_once('framework/classes/routing/router.php');
+                    require_once('framework/classes/routing/Router.php');
                     require_once($application_routes_file);
 
                     $appliaction_route_class = trim(htmlentities(end($matches)[1]));
@@ -87,10 +90,10 @@ if(isset($_GET['url']))
                             exit;
                         }
 
-                        $CONTROLLER = strtolower(htmlentities(pluralize(trim($URL[0] ?? ''))));
-                        $ACTION = strtolower(htmlentities(trim($URL[1] ?? '')));
+                        $ACTION = htmlentities(trim($URL[1] ?? ''));
                         $ID = strtolower(htmlentities(trim($URL[2] ?? '')));
-                        $MODEL = strtolower(singularize($CONTROLLER));
+                        $MODEL = ucfirst(strtolower(singularize($CONTROLLER)));
+                        $CONTROLLER = htmlentities(pluralize(trim($URL[0] ?? '')));
 
                         if(file_exists('application/controllers/' . $CONTROLLER . '.php'))
                         {
@@ -109,7 +112,8 @@ if(isset($_GET['url']))
                                 if(isset($CONTROLLER))
                                 {
                                     $params = [];
-                                    $controller = new $CONTROLLER($CONTROLLER);
+                                    $controller = ucfirst($CONTROLLER);
+                                    $controller = new $controller($CONTROLLER);
 
                                     if(($CONTROLLER == '') || (!file_exists("application/views/{$CONTROLLER}/index.php")))
                                     {
@@ -131,7 +135,7 @@ if(isset($_GET['url']))
 
                                     if(file_exists("application/views/{$CONTROLLER}/index.php"))
                                     {
-                                        $controller = $CONTROLLER;
+                                        $controller = ucfirst($CONTROLLER);
                                         $action = 'index';
 
                                         $PARAMS[strtolower($CONTROLLER)] = $params;
@@ -150,7 +154,8 @@ if(isset($_GET['url']))
                                 if(isset($CONTROLLER, $ACTION))
                                 {
                                     $params = [];
-                                    $controller = new $CONTROLLER($CONTROLLER, $ACTION);
+                                    $controller = ucfirst($CONTROLLER);
+                                    $controller = new $controller($CONTROLLER, $ACTION);
 
                                     if(($CONTROLLER == '') || ($ACTION == ''))
                                     {
@@ -172,7 +177,7 @@ if(isset($_GET['url']))
 
                                     if(file_exists("application/views/{$CONTROLLER}/{$ACTION}.php"))
                                     {
-                                        $controller = $CONTROLLER;
+                                        $controller = ucfirst($CONTROLLER);
                                         $action = $ACTION;
 
                                         $PARAMS[strtolower($controller)] = $params;
@@ -202,7 +207,8 @@ if(isset($_GET['url']))
                                 if(isset($CONTROLLER, $ACTION, $ID))
                                 {
                                     $params = [];
-                                    $controller = new $CONTROLLER($CONTROLLER, $ID, $ACTION);
+                                    $controller = ucfirst($CONTROLLER);
+                                    $controller = new $controller($CONTROLLER, $ID, $ACTION);
 
                                     if(($CONTROLLER == '') || ($ID == '') || ($ACTION == ''))
                                     {
@@ -224,7 +230,7 @@ if(isset($_GET['url']))
 
                                     if(file_exists("application/views/{$CONTROLLER}/{$ID}.php"))
                                     {
-                                        $controller = $CONTROLLER;
+                                        $controller = ucfirst($CONTROLLER);
                                         $action = $ID;
                                         $id = $ACTION;
 

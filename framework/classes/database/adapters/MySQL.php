@@ -18,7 +18,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         }
 
         $this->errors['full_messages'][$attribute] = "{$attribute} must be present.";
-        $_SESSION['VALIDATION_ERRORS'][get_class($this)][] = $this->errors['full_messages'][$attribute];
+        $_SESSION['VALIDATION_ERRORS'][ucfirst(get_class($this))][] = $this->errors['full_messages'][$attribute];
 
         return false;
     }
@@ -31,7 +31,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         }
 
         $this->errors['full_messages'][$attribute] = "{$attribute} must be between {$minimum} and {$maximum} characters.";
-        $_SESSION['VALIDATION_ERRORS'][get_class($this)][] = $this->errors['full_messages'][$attribute];
+        $_SESSION['VALIDATION_ERRORS'][ucfirst(get_class($this))][] = $this->errors['full_messages'][$attribute];
 
         return false;
     }
@@ -44,7 +44,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         }
 
         $this->errors['full_messages'][$attribute] = "{$attribute} is invalid.";
-        $_SESSION['VALIDATION_ERRORS'][get_class($this)][] = $this->errors['full_messages'][$attribute];
+        $_SESSION['VALIDATION_ERRORS'][ucfirst(get_class($this))][] = $this->errors['full_messages'][$attribute];
 
         return false;
     }
@@ -59,7 +59,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         }
 
         $this->errors['full_messages'][$attribute] = "{$attribute} already exists.";
-        $_SESSION['VALIDATION_ERRORS'][get_class($this)][] = $this->errors['full_messages'][$attribute];
+        $_SESSION['VALIDATION_ERRORS'][ucfirst(get_class($this))][] = $this->errors['full_messages'][$attribute];
 
         return false;
     }
@@ -71,7 +71,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         $table = $this->table;
         $schema = (empty($attributes)) ? $this->params : $attributes;
         $sql = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `table_name` = ? AND `TABLE_SCHEMA` = ?";
-        $database_columns = $this->query($sql, [$table, APPLICATION_ROOT]);
+        $database_columns = $this->query($sql, [$table, strtolower(APPLICATION_ROOT)]);
 
         for($i = 0; $i < count($database_columns); $i++)
         {
