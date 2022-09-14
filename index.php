@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(0);
+
 if(isset($_GET['url']))
 {
     $URL = explode("/", trim(htmlentities($_GET['url'])));
