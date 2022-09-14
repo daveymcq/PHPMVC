@@ -11,8 +11,8 @@
     echo "<strong>First Name:&nbsp;</strong>{$user->first_name}<br>";
     echo "<strong>Last Name:&nbsp;</strong>{$user->last_name}<br>";
 
-    echo "<br><a href='" . route("/account/edit/{$user->id}") . "'>Edit</a>";
-    echo "<a href='" . route("/account/delete/{$user->id}") . "'>Delete</a><br><br>";
+    echo "<br><a href='" . route("account/edit/{$user->id}") . "'>Edit</a>";
+    echo "<a href='" . route("account/delete/{$user->id}") . "'>Delete</a><br><br>";
     echo "<pre>";
     print_r($user);
     echo "</pre>";

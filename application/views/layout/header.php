@@ -12,7 +12,7 @@
     <header>
       <div class="logo">
         <div class="desktop">
-          <a href="/<?php echo APPLICATION_ROOT; ?>"><?php echo APPLICATION_ROOT; ?></a>
+          <a href="/"><?php echo APPLICATION_ROOT; ?></a>
         </div>
 
         <div class="mobile">

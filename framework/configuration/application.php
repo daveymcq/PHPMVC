@@ -1,5 +1,9 @@
 <?php
 
+// Load application configuration
+
+require_once("framework/configuration/application.php");
+
 // Get the name of the application root directory
 
 define('APPLICATION_PATH', str_replace("\\", "/", getcwd()));

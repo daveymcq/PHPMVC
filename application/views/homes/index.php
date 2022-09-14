@@ -1,3 +1,5 @@
 <h2><?php echo APPLICATION_ROOT; ?></h2>
-<a href="<?php echo route("/account/new"); ?>">Create New Account</a><br>
-<a href="<?php echo route("/accounts/all"); ?>">Account List</a>
+<a href="<?php echo route('account/posts/new'); ?>">Create New Post</a><br>
+<a href="<?php echo route('account/new'); ?>">Create New Account</a><br>
+<a href="<?php echo route('account/posts/all'); ?>">Posts List</a><br>
+<a href="<?php echo route('accounts/all'); ?>">Account List</a>

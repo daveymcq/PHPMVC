@@ -12,7 +12,7 @@ if(file_exists('application/configuration/database.php'))
 
     if(!defined('DB_ADAPTER'))
     {
-        define('DB_ADAPTER', 'mysql');
+        define('DB_ADAPTER', 'MySQL');
     }
 
     if(!defined('DB_HOST'))
@@ -40,7 +40,7 @@ else
 {
     // Set and use default database configuration
 
-    define('DB_ADAPTER', 'mysql');
+    define('DB_ADAPTER', 'MySQL');
     define('DB_HOST', '127.0.0.1');
     define('DB_NAME', APPLICATION_ROOT);
     define('DB_USER', 'root');

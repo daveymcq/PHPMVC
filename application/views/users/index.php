@@ -7,7 +7,7 @@
   {
     foreach($users as $user)
     {
-        echo "<strong><a href='" . route("/account/show/{$user->id}") . "'>{$user->first_name} {$user->last_name}</a></strong><br>";
+        echo "<strong><a href=\"" . route("account/show/{$user->id}") .  "\">{$user->first_name} {$user->last_name}</a></strong><br>";
     }
   }
 
@@ -15,9 +15,8 @@
   {
     echo '<p>No Users</p>';
   }
-
 ?>
 
-<br><a href="<?php echo route('/account/new'); ?>">New User</a>
+<br><a href="<?php echo route("account/new") ?>">New User</a>
 
 
