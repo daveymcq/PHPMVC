@@ -8,7 +8,7 @@
     error_messages_for($post);
 ?>
 
-<form action="<?php echo route("account/posts/update/{$post->id}"); ?>" method="post">
+<form action="<?php echo link_to("account/posts/update/{$post->id}"); ?>" method="post">
   <label for="title">Post Body</label>
   <p><input type="text" id="title" style="width:30%;" name="post[title]" placeholder="Message" maxlength="30" value="<?php echo $post->title; ?>"></p>
   <label for="body">Post Body</label>

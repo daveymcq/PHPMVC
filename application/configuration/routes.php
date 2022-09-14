@@ -2,7 +2,7 @@
 
 class Routes extends Router
 {
-    public static function RootRoute()
+    public static function Rootlink_to()
     {
         return Routes::root("/homes/index");
     }

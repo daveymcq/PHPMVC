@@ -97,7 +97,7 @@ function error_messages_for(ActiveRecordModel $object)
     }
 }
 
-function route(string $url)
+function link_to(string $url)
 {
     if((isset($_SERVER['HTTPS'])) && (($_SERVER['HTTPS'] == 'on') || ($_SERVER['HTTPS'] == 1)) || (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) && ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) 
     {

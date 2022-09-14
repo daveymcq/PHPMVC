@@ -6,7 +6,7 @@
   {
     foreach($posts as $post)
     {
-        echo "<strong><a href='" . route("account/posts/show/{$post->id}") . "'>{$post->title}</a></strong><br>";
+        echo "<strong><a href='" . link_to("account/posts/show/{$post->id}") . "'>{$post->title}</a></strong><br>";
     }
   }
 
@@ -17,6 +17,6 @@
 
 ?>
 
-<br><a href="<?php echo route('account/posts/new'); ?>">New Post</a>
+<br><a href="<?php echo link_to('account/posts/new'); ?>">New Post</a>
 
 
