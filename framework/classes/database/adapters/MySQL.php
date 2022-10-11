@@ -88,22 +88,27 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
 
                         if($associations)
                         {
-                            $association = ucfirst(strstr($column, '_id', true));
+                            $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type='PRIMARY KEY' AND t.table_schema=? AND t.table_name=?";
+                            $primary_key = array_values(static::query($sql, [DB_NAME, $table])[0])[0];
+                            
+                            $association = ucfirst(strstr($column, "_{$primary_key}", true));
 
                             if($association)
                             {
-                                $foreign_key = singularize($table) . '_id';
                                 $associated_table = pluralize(lcfirst($association));
+                                $foreign_key = singularize($table) . "_{$primary_key}";
                                 $sql = "SELECT * FROM `{$associated_table}` WHERE `{$foreign_key}` = ?";
-                                $associated_object_attibutes = static::query($sql, [$object->{$column}]);
+
+                                $associated_object_attibutes = static::query($sql, [$object->{$primary_key}]);
 
                                 if(count($associated_object_attibutes) === 1)
                                 {
                                     $associated_object_attibutes = $associated_object_attibutes[0];
                                     $associated_object = new $association($associated_object_attibutes, false);
                                     $association = lcfirst($association);
-                                    $foreign_key = singularize($table) . '_id';
+                
                                     $object->{$association} = $associated_object;
+
                                     unset($object->{$column});
                                     unset($associated_object->$foreign_key);
                                 }
@@ -114,8 +119,9 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
                                     {
                                         $associated_object = new $association($associated_object_attibute, false);
                                         $association = lcfirst($association);
-                                        $foreign_key = singularize($table) . '_id';
+
                                         $object->{pluralize($association)}[] = $associated_object;
+
                                         unset($object->{$column});
                                         unset($associated_object->$foreign_key);
                                     }
@@ -230,7 +236,10 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
 
             if($object) 
             {
-                $this->id = $object->id;
+                $table = strtolower(pluralize(get_class($this)));
+                $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type = 'PRIMARY KEY' AND t.table_schema = ? AND t.table_name = ?";
+                $primary_key = array_values(static::query($sql, [DB_NAME, $table])[0])[0];
+                $this->{$primary_key} = $object->{$primary_key};
             }
             
             return $object;
@@ -245,7 +254,10 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
 
             if($object) 
             {
-                $this->id = $object->id;
+                $table = strtolower(pluralize(get_class($this)));
+                $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type = 'PRIMARY KEY' AND t.table_schema = ? AND t.table_name = ?";
+                $primary_key = array_values(static::query($sql, [DB_NAME, $table])[0])[0];
+                $this->{$primary_key} = $object->{$primary_key};
             }
             
             return $object;
@@ -260,9 +272,13 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
 
         if(count($attributes))
         {
-            if(isset($attributes['id']))
+            $table = strtolower(pluralize(get_class($this)));
+            $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type = 'PRIMARY KEY' AND t.table_schema = ? AND t.table_name = ?";
+            $primary_key = array_values(static::query($sql, [DB_NAME, $table])[0])[0];
+
+            if(isset($attributes[$primary_key]))
             {
-                $object = static::find($attributes['id']);
+                $object = static::find($attributes[$primary_key]);
                 return ($object) ? true : false;
             }
         }
@@ -297,10 +313,14 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
                 if(is_array($attributes[$attribute])) unset($attributes[$attribute]);
             }
 
-            if(isset($attributes['id']))
+            $table = strtolower(pluralize(get_class($this)));
+            $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type = 'PRIMARY KEY' AND t.table_schema = ? AND t.table_name = ?";
+            $primary_key = array_values(static::query($sql, [DB_NAME, $table])[0])[0];
+
+            if(isset($attributes[$primary_key]))
             {
-                $id = $attributes['id'];
-                unset($attributes['errors'], $attributes['id'], $attributes['table'], $attributes['params']);
+                $id = $attributes[$primary_key];
+                unset($attributes['errors'], $attributes[$primary_key], $attributes['primary_key'], $attributes['table'], $attributes['params']);
 
                 $number_of_attributes = count($attributes);
 
@@ -308,9 +328,10 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
                 {
                     $table = strtolower(pluralize(get_class($this)));
                     $column_names = array_keys($attributes);
-                    $sql = "UPDATE `{$table}` SET ";
+
                     $sql_values = '';
-                    $sql_where = "`id` = '{$id}'";
+                    $sql = "UPDATE `{$table}` SET ";
+                    $sql_where = "`{$primary_key}` = '{$id}'";
 
                     foreach($column_names as $attribute)
                     {
@@ -345,37 +366,22 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
     public function delete()
     {
         $attributes = get_object_vars($this);
-        $number_of_attributes = count($attributes);
 
         if(count($attributes))
         {
-            unset($attributes['errors'], $attributes['table'], $attributes['params']);
+            unset($attributes['errors'], $attributes['table'], $attributes['params'], $attributes['primary_key']);
 
             $table = strtolower(pluralize(get_class($this)));
-            $number_of_attributes = count($attributes);
-            $sql = 'DELETE FROM `' . $table . '` WHERE ';
-            $column_names = array_keys($attributes);
+            $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type = 'PRIMARY KEY' AND t.table_schema = ? AND t.table_name = ?";
+            $primary_key = array_values(static::query($sql, [DB_NAME, $table])[0])[0];
 
-            foreach($column_names as $attribute)
-            {
-                if($number_of_attributes > 0)
-                {
-                    $sql .= "`{$attribute}` = ?";
+            $sql = "DELETE FROM `{$table}` WHERE `{$primary_key}` = ?";
 
-                    if($number_of_attributes > 1)
-                    {
-                        $sql .= " AND ";
-                    }
-                }
-
-                $number_of_attributes--;
-            }
-
-            $result = static::query($sql, $attributes);
+            $result = static::query($sql, [$attributes[$primary_key]]);
 
             if($result)
             {
-                unset($attributes['id']);
+                unset($attributes[$primary_key]);
                 return new static($attributes);
             }
         }
@@ -395,13 +401,16 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         if(empty($object->errors))
         {
             $table = strtolower(pluralize(get_called_class()));
-            unset($attributes['errors'], $attributes['id'], $attributes['table'], $attributes['params']);
+            $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type = 'PRIMARY KEY' AND t.table_schema = ? AND t.table_name = ?";
+            $primary_key = array_values(static::query($sql, [DB_NAME, $table])[0])[0];
+            
+            unset($attributes['errors'], $attributes[$primary_key], $attributes['table'], $attributes['params'], $attributes['primary_key']);
 
             $number_of_attributes = count($attributes);
 
             if($number_of_attributes)
             {
-                $sql = 'INSERT INTO `' . $table . '`';
+                $sql = "INSERT INTO `{$table}`";
                 $sql_columns = '';
                 $sql_values = '';
 
@@ -441,7 +450,11 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
 
     public static function find($id)
     {
-        $object = static::where(['id' => $id]);
+        $table = strtolower(pluralize(get_called_class()));
+        $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type = 'PRIMARY KEY' AND t.table_schema = ? AND t.table_name = ?";
+        $primary_key = array_values(static::query($sql, [DB_NAME, $table])[0])[0];
+
+        $object = static::where([$primary_key => $id]);
         return (is_array($object)) ? $object[0] : $object;
     }
 
