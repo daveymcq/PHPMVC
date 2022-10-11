@@ -88,7 +88,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
 
                         if($associations)
                         {
-                            $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type='PRIMARY KEY' AND t.table_schema=? AND t.table_name=?";
+                            $sql = "SELECT k.column_name FROM information_schema.table_constraints t JOIN information_schema.key_column_usage k USING(constraint_name,table_schema,table_name) WHERE t.constraint_type = 'PRIMARY KEY' AND t.table_schema = ? AND t.table_name = ?";
                             $primary_key = array_values(static::query($sql, [DB_NAME, $table])[0])[0];
                             
                             $association = ucfirst(strstr($column, "_{$primary_key}", true));
