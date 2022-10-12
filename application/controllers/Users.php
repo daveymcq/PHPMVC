@@ -89,6 +89,7 @@ class Users extends Controller
                     }
                 } 
             }
+            
             redirect_to("account/show/{$user->id}");
         }
         

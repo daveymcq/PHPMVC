@@ -110,7 +110,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
                                     $object->{$association} = $associated_object;
 
                                     unset($object->{$column});
-                                    unset($associated_object->$foreign_key);
+                                    unset($associated_object->{$foreign_key});
                                 }
 
                                 else if(count($associated_object_attibutes) > 1)
@@ -123,7 +123,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
                                         $object->{pluralize($association)}[] = $associated_object;
 
                                         unset($object->{$column});
-                                        unset($associated_object->$foreign_key);
+                                        unset($associated_object->{$foreign_key});
                                     }
                                 }
                             }
