@@ -7,7 +7,7 @@ require_once("framework/configuration/application.php");
 // Get the name of the application root directory
 
 define('APPLICATION_PATH', str_replace("\\", "/", getcwd()));
-define('APPLICATION_ROOT', explode('/', APPLICATION_PATH)[count(explode('/', APPLICATION_PATH)) - 1]);
+define('APPLICATION_ROOT', strtolower(explode('/', APPLICATION_PATH)[count(explode('/', APPLICATION_PATH)) - 1]));
 
 // Import application configuration
 
