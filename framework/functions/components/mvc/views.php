@@ -6,9 +6,9 @@ function stylesheet_link_tag(string $URL)
 {
     if((isset($_SERVER['HTTPS'])) && (($_SERVER['HTTPS'] == 'on') || ($_SERVER['HTTPS'] == 1)) || (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) && ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) 
     {
-        $STYLESHEETS_ASSETS_URL = 'https://' . $_SERVER['SERVER_NAME'] . '/' . APPLICATION_ROOT . '/application/assets/stylesheets';
+        $STYLESHEETS_ASSETS_URL = 'https://' . $_SERVER['SERVER_NAME'] . '/' . strtoupper(APPLICATION_ROOT) . '/application/assets/stylesheets';
 
-        if(explode('/', parse_url('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != APPLICATION_ROOT)
+        if(explode('/', parse_url('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != strtoupper(APPLICATION_ROOT))
         {
             $STYLESHEETS_ASSETS_URL = 'https://' . $_SERVER['SERVER_NAME'] . '/' . '/application/assets/stylesheets';
         }
@@ -16,9 +16,9 @@ function stylesheet_link_tag(string $URL)
 
     else 
     {
-        $STYLESHEETS_ASSETS_URL = 'http://' . $_SERVER['SERVER_NAME'] . '/' . APPLICATION_ROOT . '/application/assets/stylesheets';
+        $STYLESHEETS_ASSETS_URL = 'http://' . $_SERVER['SERVER_NAME'] . '/' . strtoupper(APPLICATION_ROOT) . '/application/assets/stylesheets';
 
-        if(explode('/', parse_url('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != APPLICATION_ROOT)
+        if(explode('/', parse_url('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != strtoupper(APPLICATION_ROOT))
         {
             $STYLESHEETS_ASSETS_URL = 'http://' . $_SERVER['SERVER_NAME'] . '/' . '/application/assets/stylesheets';
         }
@@ -47,9 +47,9 @@ function javascript_include_tag(string $URL)
 {
     if((isset($_SERVER['HTTPS'])) && (($_SERVER['HTTPS'] == 'on') || ($_SERVER['HTTPS'] == 1)) || (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) && ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) 
     {
-        $JAVASCRIPTS_ASSETS_URL = 'https://' . $_SERVER['SERVER_NAME'] . '/' . APPLICATION_ROOT . '/application/assets/javascripts';
+        $JAVASCRIPTS_ASSETS_URL = 'https://' . $_SERVER['SERVER_NAME'] . '/' . strtoupper(APPLICATION_ROOT) . '/application/assets/javascripts';
 
-        if(explode('/', parse_url('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != APPLICATION_ROOT)
+        if(explode('/', parse_url('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != strtoupper(APPLICATION_ROOT))
         {
             $JAVASCRIPTS_ASSETS_URL = 'https://' . $_SERVER['SERVER_NAME'] . '/' . '/application/assets/javascripts';
         }
@@ -57,9 +57,9 @@ function javascript_include_tag(string $URL)
 
     else 
     {
-        $JAVASCRIPTS_ASSETS_URL = 'http://' . $_SERVER['SERVER_NAME'] . '/' . APPLICATION_ROOT . '/application/assets/javascripts';
+        $JAVASCRIPTS_ASSETS_URL = 'http://' . $_SERVER['SERVER_NAME'] . '/' . strtoupper(APPLICATION_ROOT) . '/application/assets/javascripts';
 
-        if(explode('/', parse_url('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != APPLICATION_ROOT)
+        if(explode('/', parse_url('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != strtoupper(APPLICATION_ROOT))
         {
             $JAVASCRIPTS_ASSETS_URL = 'http://' . $_SERVER['SERVER_NAME'] . '/' . '/application/assets/javascripts';
         }
@@ -101,9 +101,9 @@ function link_to(string $url)
 {
     if((isset($_SERVER['HTTPS'])) && (($_SERVER['HTTPS'] == 'on') || ($_SERVER['HTTPS'] == 1)) || (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) && ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) 
     {
-        $route = htmlentities('https://' . $_SERVER['SERVER_NAME'] . '/' . APPLICATION_ROOT . '/' . $url);
+        $route = htmlentities('https://' . $_SERVER['SERVER_NAME'] . '/' . strtoupper(APPLICATION_ROOT) . '/' . $url);
 
-        if(explode('/', parse_url('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != APPLICATION_ROOT)
+        if(explode('/', parse_url('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != strtoupper(APPLICATION_ROOT))
         {
             $route = htmlentities('https://' . $_SERVER['SERVER_NAME'] . '/' . $url);
         }
@@ -111,9 +111,9 @@ function link_to(string $url)
 
     else
     {
-        $route = htmlentities('http://' . $_SERVER['SERVER_NAME'] . '/' . APPLICATION_ROOT . '/' . $url);
+        $route = htmlentities('http://' . $_SERVER['SERVER_NAME'] . '/' . strtoupper(APPLICATION_ROOT) . '/' . $url);
 
-        if(explode('/', parse_url('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != APPLICATION_ROOT)
+        if(explode('/', parse_url('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'])[1] != strtoupper(APPLICATION_ROOT))
         {
             $route = htmlentities('http://' . $_SERVER['SERVER_NAME'] . '/' . $url);
         }
