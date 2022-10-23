@@ -18,7 +18,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         }
 
         $this->errors['full_messages'][$attribute] = "{$attribute} must be present.";
-        $_SESSION['VALIDATION_ERRORS'][ucfirst(get_class($this))][] = $this->errors['full_messages'][$attribute];
+        $_SESSION['VALIDATION_ERRORS'][] = $this->errors['full_messages'][$attribute];
 
         return false;
     }
@@ -31,7 +31,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         }
 
         $this->errors['full_messages'][$attribute] = "{$attribute} must be between {$minimum} and {$maximum} characters.";
-        $_SESSION['VALIDATION_ERRORS'][ucfirst(get_class($this))][] = $this->errors['full_messages'][$attribute];
+        $_SESSION['VALIDATION_ERRORS'][] = $this->errors['full_messages'][$attribute];
 
         return false;
     }
@@ -44,7 +44,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         }
 
         $this->errors['full_messages'][$attribute] = "{$attribute} is invalid.";
-        $_SESSION['VALIDATION_ERRORS'][ucfirst(get_class($this))][] = $this->errors['full_messages'][$attribute];
+        $_SESSION['VALIDATION_ERRORS'][] = $this->errors['full_messages'][$attribute];
 
         return false;
     }
@@ -59,7 +59,7 @@ class MySQL extends Database implements CommonDatabaseActions, Validation
         }
 
         $this->errors['full_messages'][$attribute] = "{$attribute} already exists.";
-        $_SESSION['VALIDATION_ERRORS'][ucfirst(get_class($this))][] = $this->errors['full_messages'][$attribute];
+        $_SESSION['VALIDATION_ERRORS'][] = $this->errors['full_messages'][$attribute];
 
         return false;
     }

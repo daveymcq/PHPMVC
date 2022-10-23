@@ -1,13 +1,13 @@
 <h2>Account List</h2>
 <?php
 
-  $users = (new Request('users'))->requestObject;
+  $object = new HttpRequestObject();
 
-  if(!empty($users))
+  if($object->valid())
   {
-    foreach($users as $user)
+    foreach($object->users as $user)
     {
-        echo "<strong><a href=\"" . link_to("account/show/{$user->id}") .  "\">{$user->first_name} {$user->last_name}</a></strong><br>";
+        echo "<strong><a href=\"" . link_to("account/{$user->id}") .  "\">{$user->first_name} {$user->last_name}</a></strong><br>";
     }
   }
 

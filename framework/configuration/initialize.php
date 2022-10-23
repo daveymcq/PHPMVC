@@ -2,6 +2,7 @@
 
 // Enable sessions and output buffering
 
+// error_reporting(0);
 session_start();
 ob_start();
 
@@ -25,8 +26,8 @@ if(file_exists("framework/classes/model/". DB_ADAPTER ."/ActiveRecordModel.php")
     require_once("framework/classes/database/Validation.php");
     require_once("framework/classes/database/Database.php");
     require_once("framework/classes/database/adapters/" . DB_ADAPTER . ".php");
-    require_once("framework/classes/routing/Request.php");
     require_once("framework/classes/model/". DB_ADAPTER ."/ActiveRecordModel.php");
+    require_once("framework/classes/request/HttpRequestObject.php");
 
     spl_autoload_register(function($class)
     {

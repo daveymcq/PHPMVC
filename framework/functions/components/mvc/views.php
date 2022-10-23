@@ -84,10 +84,10 @@ function javascript_include_tag(string $URL)
 
 function error_messages_for(ActiveRecordModel $object)
 {
-    if(isset($_SESSION['VALIDATION_ERRORS'][get_class($object)]))
+    if(isset($_SESSION['VALIDATION_ERRORS']))
     {
-        $errors = $_SESSION['VALIDATION_ERRORS'][get_class($object)];
-        unset($_SESSION['VALIDATION_ERRORS'][get_class($object)]);
+        $errors = $_SESSION['VALIDATION_ERRORS'];
+        unset($_SESSION['VALIDATION_ERRORS']);
 
         foreach($errors as $error)
         {

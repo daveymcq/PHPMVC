@@ -2,19 +2,21 @@
 
 class Posts extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        return Post::all();
+        return User::find($id);
     }
 
-    public function show($id)
+    public function show($id, $request)
     {
-        return Post::find($id);
+       $user = User::find($request[3]);
+       return $user;
     }
 
-    public function newPost()
+    public function newPost($id, $request)
     {
-        return new Post();
+       $user = User::find($request[3] ?? $request[1]);
+       return $user;  
     }
 
     public function edit($id)
@@ -22,22 +24,35 @@ class Posts extends Controller
         return Post::find($id);
     }
 
-    public function delete($id)
+    public function delete($id, $request)
     {
         Post::find($id)->delete();
-        redirect_to("account/posts/all");
+        redirect_to("account/{$request[3]}/posts");
     }
 
-    public function create()
+    public function create($id)
     {
-        $post = new Post($_POST['post']);
+        $user = User::find($id);
 
-        if($post->save())
+        if($user)
         {
-            redirect_to("account/posts/all");
+            $user->post = new Post($_POST['post']);
+            $user->post->user_id = $user->id; 
+
+            if($user->post->save())
+            {
+                $user->post_id = $user->post->id;
+
+                if($user->save())
+                {
+                    redirect_to("account/{$user->id}/post/{$user->post->id}");
+                }
+            }
+            
+            redirect_to("account/{$user->id}/posts/new");
         }
-        
-        redirect_to("account/posts/new");
+
+        redirect_to("accounts");
     }
 
     public function update($id)
@@ -46,9 +61,9 @@ class Posts extends Controller
 
         if($post && $post->update($_POST['post']))
         {
-            redirect_to("account/posts/show/{$post->id}");
+            redirect_to("account/{$post->user->id}/post/{$post->id}");
         }
         
-        redirect_to("account/posts/edit/{$post->id}");
+        redirect_to("account/{$post->user->id}/post/{$post->id}");
     }
 }

@@ -2,18 +2,33 @@
 <ul>
 <?php
 
-  $post = (new Request('posts'))->requestObject;
-
-  if($post)
+  $user = new HttpRequestObject();
+  
+  if($user->valid())
   {
-    echo "<strong>Phone:&nbsp;</strong>{$post->title}<br>";
-    echo "<strong>Email:&nbsp;</strong>{$post->body}<br>";
+    if(isset($user->post))
+    {
+      $post = $user->post;
+      echo "<strong>Phone:&nbsp;</strong>{$post->title}<br>";
+      echo "<strong>Email:&nbsp;</strong>{$post->body}<br>";
+      echo "<br><a href='" . link_to("account/{$user->id}/post/{$post->id}/edit") . "'>Edit</a>";
+      echo "<a href='" . link_to("account/{$user->id}/post/{$post->id}/delete") . "'>Delete</a><br><br>";
+      echo "<pre>";
+      echo "</pre>";
+    }
+  }
 
-    echo "<br><a href='" . link_to("account/posts/edit/{$post->id}") . "'>Edit</a>";
-    echo "<a href='" . link_to("account/posts/delete/{$post->id}") . "'>Delete</a><br><br>";
-    echo "<pre>";
-    print_r($post);
-    echo "</pre>";
+  if(isset($user->posts))
+  {
+    foreach($user->posts as $post)
+    {
+      echo "<strong>Phone:&nbsp;</strong>{$post->title}<br>";
+      echo "<strong>Email:&nbsp;</strong>{$post->body}<br>";
+      echo "<br><a href='" . link_to("account/{$user->id}/post/{$post->id}/edit") . "'>Edit</a>";
+      echo "<a href='" . link_to("account/{$user->id}/post/{$post->id}/delete") . "'>Delete</a><br><br>";
+      echo "<pre>";
+      echo "</pre>";
+    }
   }
 
   else

@@ -2,19 +2,18 @@
 <ul>
 <?php
 
-  $user = (new Request('users'))->requestObject;
+  $user = new HttpRequestObject();
 
-  if($user)
+  if($user->valid())
   {
     echo "<strong>Phone:&nbsp;</strong>{$user->phone_number}<br>";
     echo "<strong>Email:&nbsp;</strong>{$user->email}<br>";
     echo "<strong>First Name:&nbsp;</strong>{$user->first_name}<br>";
     echo "<strong>Last Name:&nbsp;</strong>{$user->last_name}<br>";
 
-    echo "<br><a href='" . link_to("account/edit/{$user->id}") . "'>Edit</a>";
-    echo "<a href='" . link_to("account/delete/{$user->id}") . "'>Delete</a><br><br>";
+    echo "<br><a href='" . link_to("account/{$user->id}/edit") . "'>Edit</a>";
+    echo "<a href='" . link_to("account/{$user->id}/delete") . "'>Delete</a><br><br>";
     echo "<pre>";
-    print_r($user);
     echo "</pre>";
   }
 

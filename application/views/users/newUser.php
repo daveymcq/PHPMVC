@@ -1,8 +1,8 @@
 <?php 
 
-  $user = (new Request('users'))->requestObject;
+  $user = new HttpRequestObject();
 
-  if($user)
+  if($user->valid())
   {
       error_messages_for($user);
   }

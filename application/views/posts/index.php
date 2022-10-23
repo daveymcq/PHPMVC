@@ -1,12 +1,25 @@
 <h2>Post List</h2>
 <?php
-  $posts = (new Request('posts'))->requestObject;
+  $object = new HttpRequestObject();
 
-  if(!empty($posts))
+  if($object->valid())
   {
-    foreach($posts as $post)
+    $user = $object;
+
+    if(isset($user->post))
     {
-        echo "<strong><a href='" . link_to("account/posts/show/{$post->id}") . "'>{$post->title}</a></strong><br>";
+      $post = $user->post;
+      echo "<strong><a href='" . link_to("account/{$user->id}/post/{$post->id}") . "'>{$post->title}</a></strong><br>";
+    }
+
+    if(isset($user->posts))
+    {
+      $posts = $user->posts;
+
+      foreach($posts as $post)
+      {
+         echo "<strong><a href='" . link_to("account/{$user->id}/post/{$post->id}") . "'>{$post->title}</a></strong><br>";
+      }
     }
   }
 
@@ -17,6 +30,6 @@
 
 ?>
 
-<br><a href="<?php echo link_to('account/posts/new'); ?>">New Post</a>
+<br><a href='<?php echo link_to("account/{$object->id}/posts/new"); ?>'>New Post</a>
 
 

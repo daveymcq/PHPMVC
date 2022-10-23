@@ -2,13 +2,13 @@
 
 <?php 
 
-  $user = (new Request('users'))->requestObject;
-
-  if($user):
+  $user = new HttpRequestObject();
+  
+  if($user->valid()):
     error_messages_for($user);
 ?>
 
-<form action="<?php echo link_to("account/update/{$user->id}"); ?>" method="post">
+<form action="<?php echo link_to("account/{$user->id}/update"); ?>" method="post">
   <label for="phone">Phone</label>
   <p><input type="phone" id="phone" style="width:30%;" name="user[phone_number]" placeholder="Phone Number" maxlength="12" value="<?php echo $user->phone_number; ?>"></p>
   <label for="email">Email</label>

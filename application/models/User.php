@@ -9,7 +9,7 @@ class User extends Model
         validates_presence_of($this, 'last_name');
         validates_presence_of($this, 'phone_number');
 
-        validates_uniqueness_of($this, 'email');
+        // validates_uniqueness_of($this, 'email');
 
         validates_format_of($this, 'email', '/[\d\w\-\.]{2,}@[\d\w\-]{2,}.[\w]{1,}/');
 
